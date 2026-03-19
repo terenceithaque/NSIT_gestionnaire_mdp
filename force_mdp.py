@@ -7,17 +7,25 @@ def taille_alphabet(mdp:str) -> int:
     taille_alphabet = 0 # Taille de l'alphabet présent dans le mot de passe
     
     # Série de booléens pour savoir quels types de caractères sont présents dans le mot de passe
-    lettres_presentes = False
+    min_presentes = False
+    maj_presentes = False
     nombres_presents = False
     speciaux_presents = False
     
     # Parcourir les caractères du mot de passe
     for caractere in mdp:
-        # Si des lettres n'ont pas déjà été détectées dans le mot de passe
-        if not lettres_presentes:
-            if caractere.isalpha():
+        # Si des lettres minuscules n'ont pas déjà été détectées dans le mot de passe
+        if not min_presentes:
+            if caractere.isalpha() and caractere.lower()==caractere:
                 taille_alphabet += 26
-                lettres_presentes = True
+                min_presentes = True
+                continue
+        
+        # Si des lettres majuscules n'ont pas déjà été détectées dans le mot de passe
+        if not maj_presentes:
+            if caractere.isalpha() and caractere.upper()==caractere:
+                taille_alphabet += 26
+                maj_presentes = True
                 continue
         
         # Si des nombres n'ont pas déjà été détectés dans le mot de passe
