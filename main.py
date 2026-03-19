@@ -1,7 +1,8 @@
 # Programme principal de l'application
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout
-from PyQt6.QtWidgets import QWidget
-
+from PyQt6.QtWidgets import QWidget, QMenuBar
+from PyQt6.QtGui import QAction
+help(QMainWindow)
 
 class FenetreAppli(QMainWindow):
     """Une instance de fenêtre de l'application"""
@@ -17,6 +18,27 @@ class FenetreAppli(QMainWindow):
         
         # Titre de la fenêtre
         self.setWindowTitle("Gestionnaire de mots de passe")
+        
+        # Barre de menus de l'application
+        self.barre_menus = self.menuBar()
+        
+        # Menu "Fichier"
+        self.menu_fichier = self.barre_menus.addMenu("Fichier")
+        
+        # Définir les actions du menu "Fichier"
+        creer_base = QAction("Nouvelle base de données", self)
+        creer_base.setShortcut("Ctrl+N")
+        self.menu_fichier.addAction(creer_base)
+        
+        ouvrir_base = QAction("Ouvrir une base de données", self)
+        ouvrir_base.setShortcut("Ctrl+O")
+        self.menu_fichier.addAction(ouvrir_base)
+        
+        quitter_app = QAction("Quitter", self)
+        quitter_app.setShortcut("Ctrl+Q")
+        quitter_app.triggered.connect(self.close)
+        self.menu_fichier.addAction(quitter_app)
+        
         
         # Widget central de la fenêtre
         self.centralWidget = QWidget()
