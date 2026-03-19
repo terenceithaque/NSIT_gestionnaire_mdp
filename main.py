@@ -2,7 +2,6 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout
 from PyQt6.QtWidgets import QWidget, QMenuBar
 from PyQt6.QtGui import QAction
-help(QMainWindow)
 
 class FenetreAppli(QMainWindow):
     """Une instance de fenêtre de l'application"""
