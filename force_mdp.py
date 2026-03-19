@@ -15,7 +15,7 @@ def taille_alphabet(mdp:str) -> int:
     for caractere in mdp:
         # Si des lettres n'ont pas déjà été détectées dans le mot de passe
         if not lettres_presentes:
-            if caractere.is_alpha():
+            if caractere.isalpha():
                 taille_alphabet += 26
                 lettres_presentes = True
                 continue
@@ -29,15 +29,31 @@ def taille_alphabet(mdp:str) -> int:
             
         # Si des caractères spéciaux n'ont pas été déjà détectés dans le mot de passe
         if not speciaux_presents:
-            if caractere.isalnum():
+            if not caractere.isalnum():
                 taille_alphabet += 32
                 speciaux_presents = True
                 continue
     
-     return taille_alphabet
+    return taille_alphabet
 
 
-def force(mdp:str) -> float:
+def force(mdp:str) -> int:
     """Renvoie la force du mot de passe donné en bits, en calculant l'entropie"""
-    pass
+    
+    # Calculer la taille de l'alphabet du mot de passe
+    S = taille_alphabet(mdp)
+    print(S)
+    
+    # Calcul de l'entropie du mot de passe
+    L = len(mdp)
+    entropie = L*math.log2(S)
+    
+    return round(entropie)
+    
+
+
+if __name__=="__main__":
+    mdp = input("Saisissez un mot de passe:")
+    print("Force du mot de passe:", force(mdp), "bits")
+    
     
