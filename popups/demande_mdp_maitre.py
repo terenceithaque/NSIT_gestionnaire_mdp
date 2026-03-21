@@ -16,7 +16,8 @@ class DemandeMdp(QDialog):
         self.champMdp.setEchoMode(QLineEdit.EchoMode.Password) # Cacher la saisie du mot de passe
 
         self.bouton_afficher_cacher = QPushButton("Afficher") # Bouton pour afficher ou cacher le mot de passe
-
+        self.bouton_afficher_cacher.clicked.connect(self.modifier_affichage_mdp)
+        
         self.bouton_valider = QPushButton("OK") # Bouton pour valider la saisie
 
 
@@ -27,3 +28,16 @@ class DemandeMdp(QDialog):
         self.parentLayout.addWidget(self.bouton_valider, 1, 0)
 
         self.setLayout(self.parentLayout)
+
+
+    def modifier_affichage_mdp(self) -> None:
+        """Modifie l'affichage du mot de passe dans le champ de saisie."""
+
+        # Si le mot de passe est caché
+        if self.champMdp.echoMode() == QLineEdit.EchoMode.Password:
+            self.champMdp.setEchoMode(QLineEdit.EchoMode.Normal) # Afficher le mot de passe
+            self.bouton_afficher_cacher.setText("Cacher")
+
+        else:
+            self.champMdp.setEchoMode(QLineEdit.EchoMode.Password)
+            self.bouton_afficher_cacher.setText("Afficher")        
