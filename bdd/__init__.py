@@ -1,0 +1,1 @@
+"""Le dossier bdd contient des scripts liés à la gestion des bases de données SQLite de mots de passe."""
