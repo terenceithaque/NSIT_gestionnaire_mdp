@@ -1,5 +1,5 @@
 """Ce scritp définit une classe DemandeMdp représentant une popup demandant mot de passe maître d'une base de données."""
-from PyQt6.QtWidgets import QDialog, QLineEdit, QGridLayout, QPushButton, QWidget, QLabel
+from PyQt6.QtWidgets import QDialog, QLineEdit, QGridLayout, QPushButton, QWidget, QLabel, QMessageBox
 
 class DemandeMdp(QDialog):
     """Une instance de popup demandant un mot de passe maître."""
@@ -19,6 +19,7 @@ class DemandeMdp(QDialog):
         self.bouton_afficher_cacher.clicked.connect(self.modifier_affichage_mdp)
         
         self.bouton_valider = QPushButton("OK") # Bouton pour valider la saisie
+        self.bouton_valider.clicked.connect(self.fermer)
 
 
         # Ajouter les widgets à la disposition en grille
@@ -40,4 +41,23 @@ class DemandeMdp(QDialog):
 
         else:
             self.champMdp.setEchoMode(QLineEdit.EchoMode.Password)
-            self.bouton_afficher_cacher.setText("Afficher")        
+            self.bouton_afficher_cacher.setText("Afficher")
+
+
+    def valider_mdp(self) -> bool:
+        """Valide le mot de passe maître entré en vérifiant qu'il ne correspond pas à une chaîne vide. Sinon, une erreur est affichée.
+        Renvoie True si le mot de passe est validé, False sinon."""
+
+        # Afficher une erreur si le mot de passe renseigné est vide
+        if self.champMdp.text() == "":
+            QMessageBox.warning(self, "Renseignez un mot de passe", "Veuillez renseigner un mot de passe maître non vide.", QMessageBox.StandardButton.Ok)
+            return False
+        
+        return True
+
+    def fermer(self):
+        """Ferme la popup en vérifiant que le mot de passe maître renseigné est valide."""
+
+        if self.valider_mdp():
+            # Fermer la popup seulement si le mot de passe maître renseigné est valide
+            self.close()
