@@ -1,0 +1,1 @@
+"""Le dossier mdp contient des scripts concernant la gestion de mots de passe."""
