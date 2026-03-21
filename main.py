@@ -2,6 +2,7 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout
 from PyQt6.QtWidgets import QWidget, QMenuBar
 from PyQt6.QtGui import QAction
+import popups.demande_mdp
 
 class FenetreAppli(QMainWindow):
     """Une instance de fenêtre de l'application"""
@@ -28,6 +29,7 @@ class FenetreAppli(QMainWindow):
         creer_base = QAction("Nouvelle base de données", self)
         creer_base.setShortcut("Ctrl+N")
         self.menu_fichier.addAction(creer_base)
+        creer_base.triggered.connect(self.creer_base)
         
         ouvrir_base = QAction("Ouvrir une base de données", self)
         ouvrir_base.setShortcut("Ctrl+O")
@@ -43,6 +45,15 @@ class FenetreAppli(QMainWindow):
         self.centralWidget = QWidget()
         self.centralWidget.setLayout(self.parentLayout)
         self.setCentralWidget(self.centralWidget)
+
+
+    def creer_base(self) -> None:
+        """Crée une nouvelle base de données de mots de passe."""
+
+        popup_mdp_maitre = popups.demande_mdp.DemandeMdp()
+
+        popup_mdp_maitre.exec()
+        
 
 
 
