@@ -1,6 +1,6 @@
 # Programme principal de l'application
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout
-from PyQt6.QtWidgets import QWidget, QMenuBar
+from PyQt6.QtWidgets import QWidget
 from PyQt6.QtGui import QAction
 import popups.demande_mdp_maitre
 
