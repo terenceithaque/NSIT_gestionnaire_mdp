@@ -22,6 +22,7 @@ class DemandeMdp(QDialog):
         self.bouton_valider.clicked.connect(self.fermer)
 
 
+
         # Ajouter les widgets à la disposition en grille
         self.parentLayout.addWidget(self.labelMdp, 0, 0)
         self.parentLayout.addWidget(self.champMdp, 0, 1)
@@ -44,6 +45,11 @@ class DemandeMdp(QDialog):
             self.bouton_afficher_cacher.setText("Afficher")
 
 
+    def obtenir_mdp(self) -> str:
+        """Renvoie le mot de passe maître fourni par l'utilisateur."""
+        return self.champMdp.text()        
+
+
     def valider_mdp(self) -> bool:
         """Valide le mot de passe maître entré en vérifiant qu'il ne correspond pas à une chaîne vide. Sinon, une erreur est affichée.
         Renvoie True si le mot de passe est validé, False sinon."""
@@ -55,9 +61,22 @@ class DemandeMdp(QDialog):
         
         return True
 
+    def closeEvent(self, event):
+        """Ferme la popup en vérifiant que le mot de passe maître renseigné est valide, dans le cas où l'utilisateur a cliqué sur la croix de la popup."""
+
+        if self.valider_mdp():
+            # Fermer la popup seulement si le mot de passe maître renseigné est valide
+            event.accept()
+
+        else:
+            # Ne pas fermer la fenêtre
+            event.ignore()
+
+
     def fermer(self):
-        """Ferme la popup en vérifiant que le mot de passe maître renseigné est valide."""
+        """Ferme la popup en vérifiant que le mot de passe maître renseigné est valide, dans le cas où l'utilisateur a cliqué sur le bouton de validation."""
 
         if self.valider_mdp():
             # Fermer la popup seulement si le mot de passe maître renseigné est valide
             self.close()
+        

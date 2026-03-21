@@ -53,6 +53,10 @@ class FenetreAppli(QMainWindow):
         popup_mdp_maitre = popups.demande_mdp_maitre.DemandeMdp()
 
         popup_mdp_maitre.exec()
+
+        
+        mdp_maitre = popup_mdp_maitre.obtenir_mdp() # Obtenir le mot de passe maître saisi par l'utilisateur
+        print(f"Mot de passe maître: {mdp_maitre}")
         
 
 
