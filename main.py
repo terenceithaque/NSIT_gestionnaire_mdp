@@ -1,8 +1,9 @@
 # Programme principal de l'application
-from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout
+from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog
 from PyQt6.QtWidgets import QWidget
 from PyQt6.QtGui import QAction
 import popups.demande_mdp_maitre
+import bdd.bdd
 
 class FenetreAppli(QMainWindow):
     """Une instance de fenêtre de l'application"""
@@ -33,6 +34,7 @@ class FenetreAppli(QMainWindow):
         
         ouvrir_base = QAction("Ouvrir une base de données", self)
         ouvrir_base.setShortcut("Ctrl+O")
+        ouvrir_base.triggered.connect(self.ouvrir_base)
         self.menu_fichier.addAction(ouvrir_base)
         
         quitter_app = QAction("Quitter", self)
@@ -47,6 +49,19 @@ class FenetreAppli(QMainWindow):
         self.setCentralWidget(self.centralWidget)
 
 
+
+    def ouvrir_base(self) -> None:
+        """Affiche un dialogue pour ouvrir une base de données."""
+
+        dialogue_fichier = QFileDialog(self, "Ouvrir une base de données", "", "Base de données SQL (.db)")
+
+        resultat = dialogue_fichier.exec()
+
+        if resultat:
+            fichier_selectionne = dialogue_fichier.selectedFiles()[0]
+            base = bdd.bdd.BDD(fichier_selectionne)    
+
+
     def creer_base(self) -> None:
         """Crée une nouvelle base de données de mots de passe."""
 
@@ -57,7 +72,15 @@ class FenetreAppli(QMainWindow):
         
         mdp_maitre = popup_mdp_maitre.obtenir_mdp() # Obtenir le mot de passe maître saisi par l'utilisateur
         print(f"Mot de passe maître: {mdp_maitre}")
+
+        # Choisir le dossier d'enregistrement
+        nouveau_fichier, _ = QFileDialog.getSaveFileName(self, "Enregistrer la nouvelle base de données", "", "Base de données SQL (.db)")
         
+        if nouveau_fichier:
+            print(f"Fichier choisi : {nouveau_fichier}")
+
+            base = bdd.bdd.BDD(nouveau_fichier)
+
 
 
 
