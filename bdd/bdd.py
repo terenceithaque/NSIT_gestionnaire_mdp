@@ -47,4 +47,9 @@ class BDD:
 
     def enregistrer(self) -> None:
         """Enregistre la base de données dans un fichier."""
-        self.connexion.commit()       
+        self.connexion.commit()
+
+
+    def fermer_connexion(self) -> None:
+        """Ferme la connexion avec la base de données."""
+        self.connexion.close()           
