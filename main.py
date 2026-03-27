@@ -53,7 +53,7 @@ class FenetreAppli(QMainWindow):
     def ouvrir_base(self) -> None:
         """Affiche un dialogue pour ouvrir une base de données."""
 
-        dialogue_fichier = QFileDialog(self, "Ouvrir une base de données", "", "Base de données SQL (.db)")
+        dialogue_fichier = QFileDialog(self, "Ouvrir une base de données", "", "Base de données SQL (*.db)")
 
         resultat = dialogue_fichier.exec()
 
@@ -74,7 +74,7 @@ class FenetreAppli(QMainWindow):
         print(f"Mot de passe maître: {mdp_maitre}")
 
         # Choisir le dossier d'enregistrement
-        nouveau_fichier, _ = QFileDialog.getSaveFileName(self, "Enregistrer la nouvelle base de données", "", "Base de données SQL (.db)")
+        nouveau_fichier, _ = QFileDialog.getSaveFileName(self, "Enregistrer la nouvelle base de données", "", "Base de données SQL (*.db)")
         
         if nouveau_fichier:
             print(f"Fichier choisi : {nouveau_fichier}")
