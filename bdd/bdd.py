@@ -14,8 +14,37 @@ class BDD:
         self.curseur = self.connexion.cursor()
 
         # Récupérer toutes les tables du fichier
+        
+        self.tables = self.recuperer_tables()
+        print(self.tables)
+
+
+        self.afficher_contenu()
+
+        
+
+
+    def recuperer_tables(self) -> list:
+        """Renvoie la liste contenant le nom de chaque table de la base."""
+
+        # Récupérer les tables du fichier
         self.curseur.execute("SELECT name FROM sqlite_master WHERE type='table'")
 
-        self.tables = self.curseur.fetchall()
+        tables = [t[0] for t in self.curseur.fetchall()]
+        return tables
+    
 
-        print(self.tables)
+    def afficher_contenu(self) -> None:
+        """Affiche dans la console l'intégralité du contenu de la base de données."""
+        for table in self.tables:
+            print(f"--{table}--")
+            self.curseur.execute(f"SELECT * FROM {table}")
+            for resultat in self.curseur.fetchall():
+                print(resultat)
+
+            print()
+
+
+    def enregistrer(self) -> None:
+        """Enregistre la base de données dans un fichier."""
+        self.connexion.commit()       

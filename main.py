@@ -80,6 +80,7 @@ class FenetreAppli(QMainWindow):
             print(f"Fichier choisi : {nouveau_fichier}")
 
             base = bdd.bdd.BDD(nouveau_fichier)
+            base.enregistrer() # Enregistrer la base de données dans un fichier
 
 
 
