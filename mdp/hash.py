@@ -30,6 +30,18 @@ def enregistrer_hashs_maitres(contenu:dict) -> None:
         json.dump(contenu, f, indent=4)
 
 
+
+def verifier_mdp(mdp:str, hashes:list) -> bool:
+    """Compare le hash du mot de passe donné avec la liste de hashs donnée et renvoie True s'il y a une correspondance, False sinon."""
+
+    ph = PasswordHasher()
+    for h in hashes:
+        if ph.verify(h, mdp):
+            return True
+
+    return False            
+
+
 def hash_mdp(mdp:str) -> str:
     """Renvoie le hash du mot de passe donné en utilisant Argon2."""
 

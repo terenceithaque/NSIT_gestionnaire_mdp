@@ -63,6 +63,9 @@ class FenetreAppli(QMainWindow):
         resultat = dialogue_fichier.exec()
 
         if resultat:
+
+            popup_mdp_maitre = popups.demande_mdp_maitre.DemandeMdp(titre_fenetre="Mot de passe maître", hashes=self.hashs_maitres["hashes"], mode="validation")
+            popup_mdp_maitre.exec()
             fichier_selectionne = dialogue_fichier.selectedFiles()[0]
             base = bdd.bdd.BDD(fichier_selectionne)    
 

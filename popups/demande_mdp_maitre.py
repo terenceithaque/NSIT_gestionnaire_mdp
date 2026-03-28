@@ -81,8 +81,9 @@ class DemandeMdp(QDialog):
         
         # La comparaison des hashs n'est faite qu'en mode 'validation'
         if self.mode == "validation":
+            print(mdp.hash.hash_mdp(self.champMdp.text()))
             if len(self.hashes) > 0:
-                if mdp.hash(self.champMdp.text()) not in self.hashes:
+                if mdp.hash.verifier_mdp(self.champMdp.text(), self.hashes):
                     QMessageBox.warning(self, "Mot de passe incorrect", "Le mot de passe maître saisi est incorrect.")
                     return False
         
