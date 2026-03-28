@@ -49,6 +49,10 @@ class FenetreAppli(QMainWindow):
         self.centralWidget.setLayout(self.parentLayout)
         self.setCentralWidget(self.centralWidget)
 
+        # Obtenir la liste des hashs de mots de passe maîtres
+        self.hashs_maitres = mdp.hash.obtenir_hashs_maitres()
+        print("Hashs maîtres :", self.hashs_maitres)
+
 
 
     def ouvrir_base(self) -> None:
@@ -66,7 +70,7 @@ class FenetreAppli(QMainWindow):
     def creer_base(self) -> None:
         """Crée une nouvelle base de données de mots de passe."""
 
-        popup_mdp_maitre = popups.demande_mdp_maitre.DemandeMdp()
+        popup_mdp_maitre = popups.demande_mdp_maitre.DemandeMdp(titre_fenetre="Mot de passe maître", hashes=[], mode="creation")
 
         popup_mdp_maitre.exec()
 
@@ -74,6 +78,9 @@ class FenetreAppli(QMainWindow):
         mdp_maitre = popup_mdp_maitre.obtenir_mdp() # Obtenir le mot de passe maître saisi par l'utilisateur
         print(f"Mot de passe maître: {mdp_maitre}")
         print(f"Hash du mot de passe maître: {mdp.hash.hash_mdp(mdp_maitre)}")
+        hash_mdp = mdp.hash.hash_mdp(mdp_maitre)
+
+        
 
         # Choisir le dossier d'enregistrement
         nouveau_fichier, _ = QFileDialog.getSaveFileName(self, "Enregistrer la nouvelle base de données", "", "Base de données SQL (*.db)")
@@ -83,6 +90,8 @@ class FenetreAppli(QMainWindow):
 
             base = bdd.bdd.BDD(nouveau_fichier)
             base.enregistrer() # Enregistrer la base de données dans un fichier
+            self.hashs_maitres["hashes"].append(hash_mdp)
+            mdp.hash.enregistrer_hashs_maitres(self.hashs_maitres)
 
 
 

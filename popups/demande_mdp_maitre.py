@@ -1,16 +1,36 @@
 """Ce scritp définit une classe DemandeMdp représentant une popup demandant mot de passe maître d'une base de données."""
 from PyQt6.QtWidgets import QDialog, QLineEdit, QGridLayout, QPushButton, QWidget, QLabel, QMessageBox
+import mdp.hash
 
 class DemandeMdp(QDialog):
     """Une instance de popup demandant un mot de passe maître."""
-    def __init__(self, titre_fenetre:str="Mot de passe maître"):
+    def __init__(self, titre_fenetre:str="Mot de passe maître", hashes=[], mode="creation"):
         super().__init__()
+
+        assert mode == "creation" or mode == "validation", f"La popup doit être passée en mode 'creation' ou 'validation'. Le mode actuel '{mode}' est invalide."
+
+        # Liste des hashs de mots de passe maître à comparer avec celui du mot de passe saisi dans la fenêtre
+        if not hashes:
+            self.hashes = []
+
+        else:
+            self.hashes = hashes    
 
         self.setWindowTitle(titre_fenetre)
 
+        # Le mode spécifié permet d'adapter le comportement de la boîte de dialogue.
+        # notamment, si le mode spécifié est "creation", le mot de passe saisi ne sera pas comparé à la liste des hashs fournie
+        # et inversement en mode "validation"
+        self.mode = mode
+
         self.parentLayout = QGridLayout() # Disposition des widgets en grille
 
-        self.labelMdp = QLabel("Saisir le mot de passe maître:")
+        if self.mode == "validation":
+            self.labelMdp = QLabel("Saisir le mot de passe maître:")
+
+        elif self.mode == "creation":
+            self.labelMdp = QLabel("Définissez un mot de passe maître:")
+
         self.champMdp = QLineEdit()
         self.champMdp.setPlaceholderText("Mot de passe maître...")
         self.champMdp.setEchoMode(QLineEdit.EchoMode.Password) # Cacher la saisie du mot de passe
@@ -58,6 +78,13 @@ class DemandeMdp(QDialog):
         if self.champMdp.text() == "":
             QMessageBox.warning(self, "Renseignez un mot de passe", "Veuillez renseigner un mot de passe maître non vide.", QMessageBox.StandardButton.Ok)
             return False
+        
+        # La comparaison des hashs n'est faite qu'en mode 'validation'
+        if self.mode == "validation":
+            if len(self.hashes) > 0:
+                if mdp.hash(self.champMdp.text()) not in self.hashes:
+                    QMessageBox.warning(self, "Mot de passe incorrect", "Le mot de passe maître saisi est incorrect.")
+                    return False
         
         return True
 
