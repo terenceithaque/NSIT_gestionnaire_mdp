@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QWidget
 from PyQt6.QtGui import QAction
 import popups.demande_mdp_maitre
 import bdd.bdd
+import mdp.hash
 
 class FenetreAppli(QMainWindow):
     """Une instance de fenêtre de l'application"""
@@ -72,6 +73,7 @@ class FenetreAppli(QMainWindow):
         
         mdp_maitre = popup_mdp_maitre.obtenir_mdp() # Obtenir le mot de passe maître saisi par l'utilisateur
         print(f"Mot de passe maître: {mdp_maitre}")
+        print(f"Hash du mot de passe maître: {mdp.hash.hash_mdp(mdp_maitre)}")
 
         # Choisir le dossier d'enregistrement
         nouveau_fichier, _ = QFileDialog.getSaveFileName(self, "Enregistrer la nouvelle base de données", "", "Base de données SQL (*.db)")
