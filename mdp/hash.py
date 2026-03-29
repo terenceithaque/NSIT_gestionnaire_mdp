@@ -36,8 +36,12 @@ def verifier_mdp(mdp:str, hashes:list) -> bool:
 
     ph = PasswordHasher()
     for h in hashes:
-        if ph.verify(h, mdp):
-            return True
+        try:
+            if ph.verify(h, mdp):
+                return True
+        except Exception as e:
+            print(e)
+            continue
 
     return False            
 
