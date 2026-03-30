@@ -20,6 +20,8 @@ class BDD:
 
 
         self.afficher_contenu()
+        
+        print("Contenu de la base de données:", self.contenu_base())
 
         
 
@@ -32,6 +34,25 @@ class BDD:
 
         tables = [t[0] for t in self.curseur.fetchall()]
         return tables
+    
+    def contenu_base(self) -> dict:
+        """Renvoie l'intégralité du contenu de la base de données."""
+        
+        contenu = {}
+        
+        for table in self.tables:
+            contenu[table] = self.contenu_table(table)
+        
+        return contenu
+    
+    def contenu_table(self, table:str) -> list:
+        """Renvoie l'intégralité du contenu d'une table de la base de données."""
+        
+        assert table in self.tables, f"La table {table} n'existe pas."
+        
+        self.curseur.execute(f"SELECT * FROM {table}")
+        
+        return self.curseur.fetchall()
     
 
     def afficher_contenu(self) -> None:
