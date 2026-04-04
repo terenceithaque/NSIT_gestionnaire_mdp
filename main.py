@@ -1,5 +1,5 @@
 # Programme principal de l'application
-from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog
+from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog, QListWidget
 from PyQt6.QtWidgets import QWidget
 from PyQt6.QtGui import QAction
 import popups.demande_mdp_maitre
@@ -43,7 +43,9 @@ class FenetreAppli(QMainWindow):
         quitter_app.triggered.connect(self.close)
         self.menu_fichier.addAction(quitter_app)
         
-        
+        self.liste_entrees = QListWidget()
+        self.parentLayout.addWidget(self.liste_entrees)
+
         # Widget central de la fenêtre
         self.centralWidget = QWidget()
         self.centralWidget.setLayout(self.parentLayout)
@@ -52,6 +54,13 @@ class FenetreAppli(QMainWindow):
         # Obtenir la liste des hashs de mots de passe maîtres
         self.hashs_maitres = mdp.hash.obtenir_hashs_maitres()
         print("Hashs maîtres :", self.hashs_maitres)
+
+        # Base de données actuellement ouverte
+        self.base = None
+
+
+        
+
 
 
 
@@ -67,7 +76,23 @@ class FenetreAppli(QMainWindow):
             popup_mdp_maitre = popups.demande_mdp_maitre.DemandeMdp(titre_fenetre="Mot de passe maître", hashes=self.hashs_maitres["hashes"], mode="validation")
             popup_mdp_maitre.exec()
             fichier_selectionne = dialogue_fichier.selectedFiles()[0]
-            base = bdd.bdd.BDD(fichier_selectionne)    
+            self.base = bdd.bdd.BDD(fichier_selectionne)
+
+
+        self.actualiser_liste_entrees("Internet")
+
+    def actualiser_liste_entrees(self, table:str) -> None:
+        """Actualise la liste d'entrées afin d'afficher le contenu de la table indiquée."""
+
+        contenu_table = self.base.contenu_table(table)
+
+        self.liste_entrees.clear() # Supprimer les entrées précédentes
+
+        for compte in contenu_table:
+            infos = [str(info) + "|" for info in compte]
+            self.liste_entrees.addItem(str(infos)) 
+
+            
 
 
     def creer_base(self) -> None:
@@ -91,10 +116,13 @@ class FenetreAppli(QMainWindow):
         if nouveau_fichier:
             print(f"Fichier choisi : {nouveau_fichier}")
 
-            base = bdd.bdd.BDD(nouveau_fichier)
-            base.enregistrer() # Enregistrer la base de données dans un fichier
+            self.base = bdd.bdd.BDD(nouveau_fichier)
+            self.base.enregistrer() # Enregistrer la base de données dans un fichier
             self.hashs_maitres["hashes"].append(hash_mdp)
             mdp.hash.enregistrer_hashs_maitres(self.hashs_maitres)
+
+
+
 
 
 
