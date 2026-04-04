@@ -35,6 +35,26 @@ class BDD:
         tables = [t[0] for t in self.curseur.fetchall()]
         return tables
     
+
+    def est_valide(self) -> bool:
+        """Vérifie si la base de données a un contenu valide et renvoie True si c'est le cas, False sinon.
+        Une base de données est considérée comme invalide si elle ne présente pas au minimum les tables 'Master' et 'Internet' et qu'elles ont le contenu attendu."""
+
+        if "Master" and "Internet" in self.tables:
+            contenu_master = self.contenu_table("Master")
+            assert len(contenu_master) == 1
+
+            contenu_internet = self.contenu_table("Internet")
+            for compte in contenu_internet:
+                if not all([type(info).__name__ == "str"] for info in compte):
+                    return False
+
+            return True
+        
+        else:
+            return False    
+
+    
     def contenu_base(self) -> dict:
         """Renvoie l'intégralité du contenu de la base de données."""
         
