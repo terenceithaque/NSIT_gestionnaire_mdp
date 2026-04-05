@@ -76,7 +76,7 @@ class FenetreAppli(QMainWindow):
         # Si une base de données est actuellement ouverte
         if self.base is not None:
 
-            nouveau_fichier, _ = QFileDialog.getSaveFileName()
+            nouveau_fichier, _ = QFileDialog.getSaveFileName(self, "Enregistrer sous", "", "Base de données SQL (*.db)")
             db = bdd.bdd.BDD(nouveau_fichier)
             db.maj_contenu(self.base.contenu)
             self.base = db
