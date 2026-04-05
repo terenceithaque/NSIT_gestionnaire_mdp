@@ -1,5 +1,5 @@
 # Programme principal de l'application
-from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog, QListWidget
+from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog, QListWidget, QMessageBox
 from PyQt6.QtWidgets import QWidget
 from PyQt6.QtGui import QAction
 import popups.demande_mdp_maitre
@@ -37,6 +37,15 @@ class FenetreAppli(QMainWindow):
         ouvrir_base.setShortcut("Ctrl+O")
         ouvrir_base.triggered.connect(self.ouvrir_base)
         self.menu_fichier.addAction(ouvrir_base)
+
+        enregistrer_base = QAction("Enregistrer", self)
+        enregistrer_base.setShortcut("Ctrl+S")
+        self.menu_fichier.addAction(enregistrer_base)
+
+        enregistrer_sous = QAction("Enregistrer sous", self)
+        enregistrer_sous.setShortcut("Ctrl+Shift+S")
+        enregistrer_sous.triggered.connect(self.enregistrer_sous)
+        self.menu_fichier.addAction(enregistrer_sous)
         
         quitter_app = QAction("Quitter", self)
         quitter_app.setShortcut("Ctrl+Q")
@@ -61,6 +70,21 @@ class FenetreAppli(QMainWindow):
 
         
 
+    def enregistrer_sous(self) -> None:
+        """Enregistre la base de données actuelle dans un nouveau fichier."""
+
+        # Si une base de données est actuellement ouverte
+        if self.base is not None:
+
+            nouveau_fichier, _ = QFileDialog.getSaveFileName()
+            db = bdd.bdd.BDD(nouveau_fichier)
+            db.maj_contenu(self.base.contenu)
+            self.base = db
+
+            self.setWindowTitle(nouveau_fichier)
+
+        else:
+            self.creer_base()
 
 
 

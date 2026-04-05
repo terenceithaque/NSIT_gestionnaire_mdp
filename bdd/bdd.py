@@ -21,7 +21,7 @@ class BDD:
 
         self.afficher_contenu()
         
-        print("Contenu de la base de données:", self.contenu_base())
+        self.contenu = self.contenu_base() # Contenu de la base de données
 
         
 
@@ -35,6 +35,10 @@ class BDD:
         tables = [t[0] for t in self.curseur.fetchall()]
         return tables
     
+    def maj_contenu(self, contenu:dict) -> None:
+        """Met à jour le contenu de la base de données en utilisant le dictionnaire donné en paramètre."""
+        self.contenu = contenu
+        
 
     def est_valide(self) -> bool:
         """Vérifie si la base de données a un contenu valide et renvoie True si c'est le cas, False sinon.
