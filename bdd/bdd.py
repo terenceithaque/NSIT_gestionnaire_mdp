@@ -23,7 +23,26 @@ class BDD:
         
         self.contenu = self.contenu_base() # Contenu de la base de données
 
-        
+    
+
+    def reinitialiser(self) -> None:
+        """Supprime l'intégralité des tables existantes de la base de données et crée la structure nécessaire pour traiter une base de données de mots de passe."""
+
+        # Supprimer toutes les tables
+        for table in self.tables:
+            self.curseur.execute(f"DROP TABLE {table};")
+
+
+        # Créer les tables 'Master' et 'Internet'
+        self.curseur.execute("""CREATE TABLE Master (
+                             MasterMdp TEXT NOT NULL)""")
+
+        self.curseur.execute(f"""CREATE TABLE Internet (
+                             id EntryID PRIMARY KEY,
+                             nomEntree TEXT,
+                             nomUtil TEXT,
+                             email TEXT)""")    
+
 
 
     def recuperer_tables(self) -> list:
