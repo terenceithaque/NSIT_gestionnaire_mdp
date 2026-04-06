@@ -18,6 +18,13 @@ class BDD:
         self.tables = self.recuperer_tables()
         print(self.tables)
 
+        # La table actuelle représente la table sur laquelle l'utilisateur travaille actuellement
+        if len(self.tables) > 0:
+            self.table_actuelle = self.tables[0]
+
+        else:
+            self.table_actuelle = ""    
+
 
         self.afficher_contenu()
         
@@ -44,6 +51,13 @@ class BDD:
                              email TEXT)""")    
 
 
+
+    def changer_table_actuelle(self, table:str) -> None:
+        """Change la table actuelle de la base de données pour celle donnée en paramètres."""
+
+        assert table in self.tables, f"La table {table} n'existe pas"
+
+        self.table_actuelle = table
 
     def recuperer_tables(self) -> list:
         """Renvoie la liste contenant le nom de chaque table de la base."""
