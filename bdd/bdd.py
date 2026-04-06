@@ -98,6 +98,12 @@ class BDD:
         return self.curseur.fetchall()
     
 
+    def generer_id(self, table:str) -> int:
+        """Génère l'ID d'un élément pouvant être enregistré dans la table donnée. Cet ID correspond au nombre d'entrées dans la table en additionnant 1."""
+
+        nb_entrees = len(self.contenu_table(table)) # Récupérer le nombre d'entrées de la table
+        return nb_entrees + 1
+
     def afficher_contenu(self) -> None:
         """Affiche dans la console l'intégralité du contenu de la base de données."""
         for table in self.tables:
