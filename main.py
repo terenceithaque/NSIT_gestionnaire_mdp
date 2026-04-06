@@ -102,8 +102,24 @@ class FenetreAppli(QMainWindow):
             fichier_selectionne = dialogue_fichier.selectedFiles()[0]
             self.base = bdd.bdd.BDD(fichier_selectionne)
 
+            if not self.base.est_valide():
+                reponse = QMessageBox.warning(self, "Base de données invalide", 
+                                    """Cette base de données possède une structure innatendue. Vous devrez la réinitialiser afin de l'utiliser comme base de données de mots de passe. \n ATTENTION: RÉINITIALISER LA BASE DE DONNÉES VA SUPPRIMER L'INTÉGRALITÉ DE SON CONTENU. \n
+                                    Procéder à la réinitialisation ?""",
+                                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+                
+                if reponse:
+                    print("Réinitialisation...")
+                    self.base.reinitialiser()
 
-        self.actualiser_liste_entrees("Internet")
+                else:
+                    print("Annulé !")
+
+            self.actualiser_liste_entrees("Internet")        
+                
+
+
+        
 
     def actualiser_liste_entrees(self, table:str) -> None:
         """Actualise la liste d'entrées afin d'afficher le contenu de la table indiquée."""
