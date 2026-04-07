@@ -52,15 +52,15 @@ class FenetreAppli(QMainWindow):
         quitter_app.triggered.connect(self.close)
         self.menu_fichier.addAction(quitter_app)
         
+        # Menu "Entrées"
         self.menu_entrees = self.barre_menus.addMenu("Entrées")
         ajouter_entree = QAction("Nouvelle entrée", self)
         ajouter_entree.setShortcut("Ctrl+E")
         self.menu_entrees.addAction(ajouter_entree)
         
+        # Menu "Groupes"
         self.menu_groupes = self.barre_menus.addMenu("Groupes")
-        creer_groupe = QAction("Créer un groupe", self)
-        creer_groupe.setShortcut("Ctrl+G")
-        self.menu_groupes.addAction(creer_groupe)
+        
         
         self.liste_entrees = QListWidget()
         self.parentLayout.addWidget(self.liste_entrees)
@@ -96,8 +96,28 @@ class FenetreAppli(QMainWindow):
         else:
             self.creer_base()
 
-
-
+    
+    def actualiser_menu_groupes(self):
+        """Actualise le menu 'Groupes' afin d'y afficher les tables de la base de données actuellement ouverte."""
+        
+        self.menu_groupes.clear() # Supprimer tous les boutons du menu "Groupes"
+        # Ajouter l'action de création d'un groupe
+        creer_groupe = QAction("Créer un groupe", self)
+        creer_groupe.setShortcut("Ctrl+G")
+        self.menu_groupes.addAction(creer_groupe)
+        
+        for table in self.base.tables:
+            action_table = QAction(table, self)
+             
+            # ⚠️ capture correcte de la variable
+            """action.triggered.connect(
+                lambda checked, t=table: self.open_table(t)
+            )"""
+            
+            self.menu_groupes.addAction(action_table)
+            
+        
+        
     def ouvrir_base(self) -> None:
         """Affiche un dialogue pour ouvrir une base de données."""
 
