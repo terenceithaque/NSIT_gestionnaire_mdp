@@ -106,6 +106,8 @@ class FenetreAppli(QMainWindow):
         creer_groupe.setShortcut("Ctrl+G")
         self.menu_groupes.addAction(creer_groupe)
         
+        self.menu_groupes.addSeparator()
+        
         for table in self.base.tables:
             action_table = QAction(table, self)
              
@@ -145,7 +147,8 @@ class FenetreAppli(QMainWindow):
                 else:
                     print("Annulé !")
 
-            self.actualiser_liste_entrees("Internet")        
+            self.actualiser_liste_entrees("Internet")
+            self.actualiser_menu_groupes()
                 
 
 
