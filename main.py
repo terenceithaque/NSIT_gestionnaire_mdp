@@ -60,6 +60,10 @@ class FenetreAppli(QMainWindow):
         
         # Menu "Groupes"
         self.menu_groupes = self.barre_menus.addMenu("Groupes")
+        # Ajouter l'action de création d'un groupe
+        creer_groupe = QAction("Créer un groupe", self)
+        creer_groupe.setShortcut("Ctrl+G")
+        self.menu_groupes.addAction(creer_groupe)
         
         
         self.liste_entrees = QListWidget()
