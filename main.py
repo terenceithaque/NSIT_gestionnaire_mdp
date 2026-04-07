@@ -52,6 +52,11 @@ class FenetreAppli(QMainWindow):
         quitter_app.triggered.connect(self.close)
         self.menu_fichier.addAction(quitter_app)
         
+        self.menu_entrees = self.barre_menus.addMenu("Entrées")
+        ajouter_entree = QAction("Nouvelle entrée")
+        ajouter_entree.setShortcut("Ctrl+E")
+        self.menu_entrees.addAction(ajouter_entree)
+        
         self.liste_entrees = QListWidget()
         self.parentLayout.addWidget(self.liste_entrees)
 
