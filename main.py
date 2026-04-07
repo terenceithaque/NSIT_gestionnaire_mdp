@@ -116,10 +116,11 @@ class FenetreAppli(QMainWindow):
         
         for table in self.base.tables:
             action_table = QAction(table, self)
+            print(table, type(table))
              
             # ⚠️ capture correcte de la variable
             action_table.triggered.connect(
-                lambda checked, t=table: self.changer_table_actuelle(table)
+                lambda checked, t=table: self.changer_table_actuelle(t)
             )
             
             self.menu_groupes.addAction(action_table)
