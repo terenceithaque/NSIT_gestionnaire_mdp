@@ -119,7 +119,7 @@ class FenetreAppli(QMainWindow):
              
             # ⚠️ capture correcte de la variable
             action_table.triggered.connect(
-                lambda checked, t=table: self.changer_table_actuelle(self)
+                lambda checked, t=table: self.changer_table_actuelle(table)
             )
             
             self.menu_groupes.addAction(action_table)
