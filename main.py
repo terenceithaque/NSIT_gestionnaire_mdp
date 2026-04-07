@@ -95,6 +95,12 @@ class FenetreAppli(QMainWindow):
 
         else:
             self.creer_base()
+            
+    
+    def changer_table_actuelle(self, table:str) -> None:
+        """Change la table de la base de données actuellement affichée par celle donnée en paramètre."""
+        self.base.changer_table_actuelle(table)
+        self.actualiser_liste_entrees(self.base.table_actuelle)
 
     
     def actualiser_menu_groupes(self):
@@ -112,9 +118,9 @@ class FenetreAppli(QMainWindow):
             action_table = QAction(table, self)
              
             # ⚠️ capture correcte de la variable
-            """action.triggered.connect(
-                lambda checked, t=table: self.open_table(t)
-            )"""
+            action_table.triggered.connect(
+                lambda checked, t=table: self.changer_table_actuelle(self)
+            )
             
             self.menu_groupes.addAction(action_table)
             
