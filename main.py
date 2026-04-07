@@ -53,9 +53,14 @@ class FenetreAppli(QMainWindow):
         self.menu_fichier.addAction(quitter_app)
         
         self.menu_entrees = self.barre_menus.addMenu("Entrées")
-        ajouter_entree = QAction("Nouvelle entrée")
+        ajouter_entree = QAction("Nouvelle entrée", self)
         ajouter_entree.setShortcut("Ctrl+E")
         self.menu_entrees.addAction(ajouter_entree)
+        
+        self.menu_groupes = self.barre_menus.addMenu("Groupes")
+        creer_groupe = QAction("Créer un groupe", self)
+        creer_groupe.setShortcut("Ctrl+G")
+        self.menu_groupes.addAction(creer_groupe)
         
         self.liste_entrees = QListWidget()
         self.parentLayout.addWidget(self.liste_entrees)
