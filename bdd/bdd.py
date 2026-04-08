@@ -1,6 +1,6 @@
 """bdd.py contient une classe BDD représentant une base de données SQLite de mots de passe."""
 import sqlite3
-
+import os
 
 class BDD:
     """Une base de données SQLite contenant des mots de passe."""
@@ -30,6 +30,12 @@ class BDD:
         
         self.contenu = self.contenu_base() # Contenu de la base de données
 
+        self.est_enregistree = True # Variable permettant de suivre l'état d'enregistrement de la base de données
+
+
+    def fichier_existant(self) -> bool:
+        """Renvoie True si le fichier de la base de données existe, False sinon."""
+        return os.path.exists(self.fichier)
     
 
     def reinitialiser(self) -> None:
@@ -50,7 +56,7 @@ class BDD:
                              nomUtil TEXT,
                              email TEXT)""")    
 
-
+        self.enregistrer() # Enregistrer les modifications
 
     def changer_table_actuelle(self, table:str) -> None:
         """Change la table actuelle de la base de données pour celle donnée en paramètres."""
@@ -132,6 +138,7 @@ class BDD:
     def enregistrer(self) -> None:
         """Enregistre la base de données dans un fichier."""
         self.connexion.commit()
+        self.est_enregistree = True
 
 
     def fermer_connexion(self) -> None:

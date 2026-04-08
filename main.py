@@ -40,6 +40,7 @@ class FenetreAppli(QMainWindow):
 
         enregistrer_base = QAction("Enregistrer", self)
         enregistrer_base.setShortcut("Ctrl+S")
+        enregistrer_base.triggered.connect(self.enregistrer)
         self.menu_fichier.addAction(enregistrer_base)
 
         enregistrer_sous = QAction("Enregistrer sous", self)
@@ -99,12 +100,41 @@ class FenetreAppli(QMainWindow):
 
         else:
             self.creer_base()
+
+
+    def enregistrer(self) -> None:
+        """Enregistre la base de données actuelle dans son fichier."""
+        
+        if self.base is not None:
+            # Si le fichier de la base de données a déjà été créé, le mettre à jour
+            if self.base.fichier_existant():
+                self.base.enregistrer()
+
+            # Sinon, demander à l'utilisateur où enregistrer la base
+            else:
+                self.enregistrer_sous()            
             
     
     def changer_table_actuelle(self, table:str) -> None:
         """Change la table de la base de données actuellement affichée par celle donnée en paramètre."""
         self.base.changer_table_actuelle(table)
         self.actualiser_liste_entrees(self.base.table_actuelle)
+
+    def verifier_enregistrement(self) -> None:
+        """Vérifie si la base de données actuelle est enregistrée, et si ce n'est pas le cas, affiche une popup d'avertissement à l'utilisateur."""
+
+        # Afficher une popup si la base de données n'est pas enregistrée
+        if not self.base.est_enregistree:
+            enregistrer = QMessageBox.warning(self, 
+                                              "Enregistrer la base de données ?", 
+                                              """Si vous n'enregistrez pas la base de données, les dernières modifications seront perdues. 
+                                              \n Enregistrer les modifications ?""",
+                                              QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel
+                                              )
+            
+            if enregistrer:
+                self.enregistrer()
+            
 
     
     def actualiser_menu_groupes(self):
