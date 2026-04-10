@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog,
 from PyQt6.QtWidgets import QWidget
 from PyQt6.QtGui import QAction
 import popups.demande_mdp_maitre
+import popups.nouveau_mdp
 import bdd.bdd
 import mdp.hash
 
@@ -57,6 +58,7 @@ class FenetreAppli(QMainWindow):
         self.menu_entrees = self.barre_menus.addMenu("Entrées")
         ajouter_entree = QAction("Nouvelle entrée", self)
         ajouter_entree.setShortcut("Ctrl+E")
+        ajouter_entree.triggered.connect(self.nouveau_mdp)
         self.menu_entrees.addAction(ajouter_entree)
         
         # Menu "Groupes"
@@ -112,7 +114,15 @@ class FenetreAppli(QMainWindow):
 
             # Sinon, demander à l'utilisateur où enregistrer la base
             else:
-                self.enregistrer_sous()            
+                self.enregistrer_sous()
+
+    
+    def nouveau_mdp(self) -> None:
+        """Demande à l'utilisateur de saisir un mot de passe à ajouter dans la base de données."""
+
+        popup_nouveau_mdp = popups.nouveau_mdp.DemandeNouveauMdp()
+        popup_nouveau_mdp.exec()
+
             
     
     def changer_table_actuelle(self, table:str) -> None:
