@@ -38,6 +38,20 @@ class BDD:
         return os.path.exists(self.fichier)
     
 
+    def creer_table(self, table:str) -> None:
+        """Crée une nouvelle table dans la base de données."""
+
+        self.curseur.execute(f""""CREATE TABLE {table}
+                            
+                            id EntryID PRIMARY KEY,
+                            nomEntreeText,
+                            nomUtil TEXT,
+                            email TEXT;""")
+
+        self.tables = self.recuperer_tables() # Mettre à jour la liste des tables
+        self.contenu = self.contenu_base() # Mettre à jour le contenu de la base 
+    
+
     def reinitialiser(self) -> None:
         """Supprime l'intégralité des tables existantes de la base de données et crée la structure nécessaire pour traiter une base de données de mots de passe."""
 
