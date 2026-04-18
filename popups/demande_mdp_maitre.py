@@ -41,13 +41,19 @@ class DemandeMdp(QDialog):
         self.bouton_valider = QPushButton("OK") # Bouton pour valider la saisie
         self.bouton_valider.clicked.connect(self.fermer)
 
+        self.bouton_annuler = QPushButton("Annuler") # Bouton pour annuler et fermer la boîte de dialogue
+        self.bouton_annuler.clicked.connect(lambda:self.fermer(validation=False))
 
+
+        self.mdp_verifie = False # Variable de suivi de l'état de validation du mot de passe
+        self.forcer_fermeture = False 
 
         # Ajouter les widgets à la disposition en grille
         self.parentLayout.addWidget(self.labelMdp, 0, 0)
         self.parentLayout.addWidget(self.champMdp, 0, 1)
         self.parentLayout.addWidget(self.bouton_afficher_cacher, 0, 2)
         self.parentLayout.addWidget(self.bouton_valider, 1, 0)
+        self.parentLayout.addWidget(self.bouton_annuler, 1,1)
 
         self.setLayout(self.parentLayout)
 
@@ -91,21 +97,34 @@ class DemandeMdp(QDialog):
         return True
 
     def closeEvent(self, event):
-        """Ferme la popup en vérifiant que le mot de passe maître renseigné est valide, dans le cas où l'utilisateur a cliqué sur la croix de la popup."""
+        """Ferme la popup en vérifiant que le mot de passe maître renseigné est valide, dans le cas où l'utilisateur a cliqué sur la croix de la popup, sauf s'il faut forcer la fermeture."""
 
+        if self.forcer_fermeture:
+            event.accept()
+            return
+        
         if self.valider_mdp():
-            # Fermer la popup seulement si le mot de passe maître renseigné est valide
+            self.mdp_verifie = True
             event.accept()
 
         else:
-            # Ne pas fermer la fenêtre
-            event.ignore()
+            self.mdp_verifie = False
+            event.ignore()    
+    
 
 
-    def fermer(self):
-        """Ferme la popup en vérifiant que le mot de passe maître renseigné est valide, dans le cas où l'utilisateur a cliqué sur le bouton de validation."""
+    def fermer(self, validation=True):
+        """Ferme la popup.
+        - validation: booléen, ayant pour valeur True par défaut. Si la valeur de ce booléen est True, la fermeture de la popup va être empêchée tant que le mot de passe saisi n'est pas valide.
+          Autrement, la popup est fermée sans validation préalable."""
 
-        if self.valider_mdp():
-            # Fermer la popup seulement si le mot de passe maître renseigné est valide
-            self.close()
+        if validation:
+            if self.valider_mdp():
+                # Fermer la popup seulement si le mot de passe maître renseigné est valide
+                self.close()
+
+        else:
+            self.mdp_verifie = False
+            self.forcer_fermeture = True
+            self.close()        
         

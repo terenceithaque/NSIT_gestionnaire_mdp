@@ -181,25 +181,32 @@ class FenetreAppli(QMainWindow):
         if resultat:
 
             popup_mdp_maitre = popups.demande_mdp_maitre.DemandeMdp(titre_fenetre="Mot de passe maître", hashes=self.hashs_maitres["hashes"], mode="validation")
-            popup_mdp_maitre.exec()
-            fichier_selectionne = dialogue_fichier.selectedFiles()[0]
-            self.base = bdd.bdd.BDD(fichier_selectionne)
+            resultat_mdp = popup_mdp_maitre.exec()
 
-            if not self.base.est_valide():
-                reponse = QMessageBox.warning(self, "Base de données invalide", 
-                                    """Cette base de données possède une structure innatendue. Vous devrez la réinitialiser afin de l'utiliser comme base de données de mots de passe. \n ATTENTION: RÉINITIALISER LA BASE DE DONNÉES VA SUPPRIMER L'INTÉGRALITÉ DE SON CONTENU. \n
-                                    Procéder à la réinitialisation ?""",
-                                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
-                
-                if reponse:
-                    print("Réinitialisation...")
-                    self.base.reinitialiser()
 
-                else:
-                    print("Annulé !")
+            if resultat_mdp and popup_mdp_maitre.mdp_verifie:
+                fichier_selectionne = dialogue_fichier.selectedFiles()[0]
+                self.base = bdd.bdd.BDD(fichier_selectionne)
 
-            self.actualiser_liste_entrees("Internet")
-            self.actualiser_menu_groupes()
+                if not self.base.est_valide():
+                    reponse = QMessageBox.warning(self, "Base de données invalide", 
+                                        """Cette base de données possède une structure innatendue. Vous devrez la réinitialiser afin de l'utiliser comme base de données de mots de passe. \n ATTENTION: RÉINITIALISER LA BASE DE DONNÉES VA SUPPRIMER L'INTÉGRALITÉ DE SON CONTENU. \n
+                                        Procéder à la réinitialisation ?""",
+                                        QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+                    
+                    if reponse:
+                        print("Réinitialisation...")
+                        self.base.reinitialiser()
+
+                    else:
+                        print("Annulé !")
+
+            else:
+                print("Ouverture de la base de données annulée")            
+
+            if self.base is not None:
+                self.actualiser_liste_entrees("Internet")
+                self.actualiser_menu_groupes()
                 
 
 
@@ -224,26 +231,29 @@ class FenetreAppli(QMainWindow):
 
         popup_mdp_maitre = popups.demande_mdp_maitre.DemandeMdp(titre_fenetre="Mot de passe maître", hashes=[], mode="creation")
 
-        popup_mdp_maitre.exec()
+        resultat = popup_mdp_maitre.exec()
 
-        
-        mdp_maitre = popup_mdp_maitre.obtenir_mdp() # Obtenir le mot de passe maître saisi par l'utilisateur
-        print(f"Mot de passe maître: {mdp_maitre}")
-        print(f"Hash du mot de passe maître: {mdp.hash.hash_mdp(mdp_maitre)}")
-        hash_mdp = mdp.hash.hash_mdp(mdp_maitre)
+        if resultat and popup_mdp_maitre.mdp_verifie:
+            mdp_maitre = popup_mdp_maitre.obtenir_mdp() # Obtenir le mot de passe maître saisi par l'utilisateur
+            print(f"Mot de passe maître: {mdp_maitre}")
+            print(f"Hash du mot de passe maître: {mdp.hash.hash_mdp(mdp_maitre)}")
+            hash_mdp = mdp.hash.hash_mdp(mdp_maitre)
 
-        
 
-        # Choisir le dossier d'enregistrement
-        nouveau_fichier, _ = QFileDialog.getSaveFileName(self, "Enregistrer la nouvelle base de données", "", "Base de données SQL (*.db)")
-        
-        if nouveau_fichier:
-            print(f"Fichier choisi : {nouveau_fichier}")
 
-            self.base = bdd.bdd.BDD(nouveau_fichier)
-            self.base.enregistrer() # Enregistrer la base de données dans un fichier
-            self.hashs_maitres["hashes"].append(hash_mdp)
-            mdp.hash.enregistrer_hashs_maitres(self.hashs_maitres)
+            # Choisir le dossier d'enregistrement
+            nouveau_fichier, _ = QFileDialog.getSaveFileName(self, "Enregistrer la nouvelle base de données", "", "Base de données SQL (*.db)")
+            
+            if nouveau_fichier:
+                print(f"Fichier choisi : {nouveau_fichier}")
+
+                self.base = bdd.bdd.BDD(nouveau_fichier)
+                self.base.enregistrer() # Enregistrer la base de données dans un fichier
+                self.hashs_maitres["hashes"].append(hash_mdp)
+                mdp.hash.enregistrer_hashs_maitres(self.hashs_maitres)
+
+        else:
+            print("Création de la base de données annulée")                        
 
 
 
