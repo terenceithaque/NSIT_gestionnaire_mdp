@@ -33,6 +33,9 @@ class DemandeNouveauMdp(QDialog):
 
         self.labelForce = QLabel(f"Force du mot de passe: 0 bits")
 
+        self.boutonValider = QPushButton("OK")
+        self.boutonAnnuler = QPushButton("Annuler")
+
         self.champ_mdp.textChanged.connect(self.actualiser_force_mdp)
 
 
@@ -49,10 +52,29 @@ class DemandeNouveauMdp(QDialog):
 
         self.parentLayout.addWidget(self.labelForce, 3,0)
 
+        self.parentLayout.addWidget(self.boutonValider, 4,0)
+        self.parentLayout.addWidget(self.boutonAnnuler, 4,1)
+
         self.setLayout(self.parentLayout)
 
 
 
+    def valider(self) -> bool:
+        """Vérifie la validité des champs de saisie en renvoie True si tout est correct, False sinon."""
+
+        return self.champ_titre.text() != "" and self.champ_mdp.text() != ""
+    
+
+    def obtenir_entrees(self) -> dict:
+        """Renvoie le contenu de l'ensemble des entrées de la popup sous forme de dictionnaire."""
+
+        resultat = {
+            "titreEntree":self.champ_titre.text(),
+            "nomUtil":self.champ_nom_util.text(),
+            "mdp":self.champ_mdp.text()
+        }
+
+        return resultat
 
     def actualiser_force_mdp(self) -> None:
         """Actualise la force de mot de passe affichée pour refléter le mot de passe actuellement saisi."""
