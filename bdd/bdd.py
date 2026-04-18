@@ -49,7 +49,9 @@ class BDD:
                             email TEXT;""")
 
         self.tables = self.recuperer_tables() # Mettre à jour la liste des tables
-        self.contenu = self.contenu_base() # Mettre à jour le contenu de la base 
+        self.contenu = self.contenu_base() # Mettre à jour le contenu de la base
+
+        self.est_enregistree = False 
     
 
     def reinitialiser(self) -> None:

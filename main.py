@@ -121,7 +121,9 @@ class FenetreAppli(QMainWindow):
         """Demande à l'utilisateur de saisir un mot de passe à ajouter dans la base de données."""
 
         popup_nouveau_mdp = popups.nouveau_mdp.DemandeNouveauMdp()
-        popup_nouveau_mdp.exec()
+        resultat = popup_nouveau_mdp.exec()
+
+        
 
             
     

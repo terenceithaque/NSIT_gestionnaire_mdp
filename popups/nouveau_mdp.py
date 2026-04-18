@@ -36,7 +36,14 @@ class DemandeNouveauMdp(QDialog):
         self.boutonValider = QPushButton("OK")
         self.boutonAnnuler = QPushButton("Annuler")
 
+        self.boutonValider.clicked.connect(lambda:self.fermer(validation=True))
+        self.boutonAnnuler.clicked.connect(lambda:self.fermer(validation=False))
+
         self.champ_mdp.textChanged.connect(self.actualiser_force_mdp)
+
+        self.forcer_fermeture = False
+        self.mdp_verifie = False
+        self.nom_util_verifie = False
 
 
         # Disposition des widgets dans la popup
@@ -60,9 +67,14 @@ class DemandeNouveauMdp(QDialog):
 
 
     def valider(self) -> bool:
-        """Vérifie la validité des champs de saisie en renvoie True si tout est correct, False sinon."""
+        """Vérifie la validité des champs de saisie en renvoie True si tout est correct, False sinon.
+        Un avertissement est affiché dans le cas où les champs sont invalides."""
 
-        return self.champ_titre.text() != "" and self.champ_mdp.text() != ""
+        if not self.champ_nom_util.text() or not self.champ_mdp.text():
+            QMessageBox.warning(self, "Nom d'utilisateur et/ou mot de passe invalide", "Le nom d'utilisateur et/ou le mot de passe sont invalides.", QMessageBox.StandardButton.Ok)
+            return False
+        
+        return True
     
 
     def obtenir_entrees(self) -> dict:
@@ -98,4 +110,35 @@ class DemandeNouveauMdp(QDialog):
 
         else:
             self.champ_mdp.setEchoMode(QLineEdit.EchoMode.Password)
-            self.bouton_afficher_cacher.setText("Afficher")        
+            self.bouton_afficher_cacher.setText("Afficher")
+
+      
+
+    def closeEvent(self, event):
+        """Méthode appelée lors de la fermeture de la popup. Elle permet de valider le mot de passe et le nom d'utilisateur avant fermeture, ou au contraire de forcer la fermeture sans validation."""
+
+        if self.forcer_fermeture:
+            event.accept()
+            return
+        
+        if self.valider():
+            self.mdp_verifie, self.nom_util_verifie = True, True
+            event.accept()
+
+        else:
+            self.mdp_verifie, self.nom_util_verifie = False, False
+            event.ignore()  
+
+    def fermer(self, validation=True) -> None:
+        """Ferme la popup.
+        - validation: booléen ayant True comme valeur par défaut. Indique s'il faut valider le mot de passe et le nom d'utilisateur avant de fermer la popup."""
+
+
+        if validation:
+            if self.valider():
+                self.close()
+
+        else:
+            self.mdp_verifie, self.nom_util_verifie = False, False
+            self.forcer_fermeture = True
+            self.close()                         
