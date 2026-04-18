@@ -1,5 +1,8 @@
 "generer_mdp.py permet de générer des mots de passe forts de façon automatisée."
 import secrets
+import random
+import string
+import force_mdp
 
 
 def generer_mdp(taille_min:int, inclus:list) -> str:
@@ -21,6 +24,18 @@ def generer_mdp(taille_min:int, inclus:list) -> str:
         mdp.append(secrets.choice(tous_les_caracteres))
 
     # Mélanger pour éviter un ordre prévisible
-    secrets.shuffle(mdp)
+    random.shuffle(mdp)
 
-    return "".join(mdp)        
+    return "".join(mdp)
+
+
+
+if __name__ == "__main__":
+
+    while True:
+        taille_min = int(input("Taille minimale du mot de passe à générer:"))
+        inclus = [string.ascii_lowercase, string.ascii_uppercase, string.digits, string.punctuation]
+        mot_de_passe = generer_mdp(taille_min, inclus)
+        print()
+        
+        print(f"{mot_de_passe} (force:{force_mdp.force(mot_de_passe)} bits)")
