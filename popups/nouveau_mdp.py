@@ -31,7 +31,7 @@ class DemandeNouveauMdp(QDialog):
         self.bouton_afficher_cacher = QPushButton("Afficher")
         self.bouton_afficher_cacher.clicked.connect(self.modifier_affichage_mdp)
 
-        self.labelForce = QLabel(f"Force du mot de passe: 0 bits")
+        self.labelForce = QLabel(f"Force du mot de passe: 0 bits (<b>faible</b>)")
 
         self.boutonValider = QPushButton("OK")
         self.boutonAnnuler = QPushButton("Annuler")
@@ -94,10 +94,21 @@ class DemandeNouveauMdp(QDialog):
         mot_de_passe = self.champ_mdp.text()
         
         if len(mot_de_passe) > 0:
-            self.labelForce.setText(f"Force du mot de passe : {mdp.force_mdp.force(self.champ_mdp.text())} bits")
+            force_mdp = mdp.force_mdp.force(self.champ_mdp.text())
+
+            if force_mdp < 40:
+                self.labelForce.setText(f"Force du mot de passe : {mdp.force_mdp.force(self.champ_mdp.text())} bits (<b>faible</b>)")
+
+            if 40 <= force_mdp <= 60:
+                    self.labelForce.setText(f"Force du mot de passe : {mdp.force_mdp.force(self.champ_mdp.text())} bits (<b>moyenne</b>)")
+
+            if force_mdp > 60:
+                self.labelForce.setText(f"Force du mot de passe : {mdp.force_mdp.force(self.champ_mdp.text())} bits (<b>élevée</b>)")        
+
+
 
         else:
-            self.labelForce.setText(f"Force du mot de passe: 0 bits")
+            self.labelForce.setText(f"Force du mot de passe: 0 bits (<b>faible</b>)")
     
     def modifier_affichage_mdp(self) -> None:
         """Modifie l'affichage du mot de passe dans le champ de saisie."""
@@ -136,6 +147,8 @@ class DemandeNouveauMdp(QDialog):
 
         if validation:
             if self.valider():
+                self.mdp_verifie, self.nom_util_verifie = True, True
+                self.forcer_fermeture = False
                 self.close()
 
         else:

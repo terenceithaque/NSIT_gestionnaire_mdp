@@ -123,7 +123,12 @@ class FenetreAppli(QMainWindow):
         popup_nouveau_mdp = popups.nouveau_mdp.DemandeNouveauMdp()
         resultat = popup_nouveau_mdp.exec()
 
-        
+        if resultat and all([popup_nouveau_mdp.mdp_verifie, popup_nouveau_mdp.nom_util_verifie]):
+            donnees_entree = popup_nouveau_mdp.obtenir_entrees()
+            print("Données de l'entrée :", donnees_entree)
+
+        else:
+            print("Création de l'entrée annulée")    
 
             
     
