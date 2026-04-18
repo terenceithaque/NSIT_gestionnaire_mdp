@@ -1,5 +1,5 @@
 "generer_mdp.py permet de générer des mots de passe forts de façon automatisée."
-import random
+import secrets
 
 
 def generer_mdp(taille_min:int, inclus:list) -> str:
@@ -12,15 +12,15 @@ def generer_mdp(taille_min:int, inclus:list) -> str:
     mdp = []
 
     for groupe in inclus:
-        mdp.append(random.choice(groupe))
+        mdp.append(secrets.choice(groupe))
 
 
     tous_les_caracteres = "".join(inclus)
 
     while len(mdp) < taille_min:
-        mdp.append(random.choice(tous_les_caracteres))
+        mdp.append(secrets.choice(tous_les_caracteres))
 
     # Mélanger pour éviter un ordre prévisible
-    random.shuffle(mdp)
+    secrets.shuffle(mdp)
 
     return "".join(mdp)        
