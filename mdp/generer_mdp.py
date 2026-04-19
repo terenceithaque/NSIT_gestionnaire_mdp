@@ -2,7 +2,7 @@
 import secrets
 import random
 import string
-import force_mdp
+import mdp.force_mdp
 
 
 def generer_mdp(taille_min:int, inclus:list) -> str:

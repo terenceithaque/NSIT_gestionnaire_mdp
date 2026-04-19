@@ -1,6 +1,7 @@
 "nouveau_mdp.py contient une classe DemandeNouveauMdp représentant une popup d'ajout d'un mot de passe"
 from PyQt6.QtWidgets import QDialog, QLineEdit, QGridLayout, QPushButton, QWidget, QLabel, QMessageBox
 import mdp.force_mdp
+import mdp.generer_mdp
 
 
 class DemandeNouveauMdp(QDialog):
@@ -31,6 +32,9 @@ class DemandeNouveauMdp(QDialog):
         self.bouton_afficher_cacher = QPushButton("Afficher")
         self.bouton_afficher_cacher.clicked.connect(self.modifier_affichage_mdp)
 
+        self.bouton_generer_mdp = QPushButton("Générer un mot de passe fort")
+
+
         self.labelForce = QLabel(f"Force du mot de passe: 0 bits (<b>faible</b>)")
 
         self.boutonValider = QPushButton("OK")
@@ -57,10 +61,12 @@ class DemandeNouveauMdp(QDialog):
         self.parentLayout.addWidget(self.champ_mdp, 2,1)
         self.parentLayout.addWidget(self.bouton_afficher_cacher, 2,2)
 
-        self.parentLayout.addWidget(self.labelForce, 3,0)
+        self.parentLayout.addWidget(self.bouton_generer_mdp, 3,0)
 
-        self.parentLayout.addWidget(self.boutonValider, 4,0)
-        self.parentLayout.addWidget(self.boutonAnnuler, 4,1)
+        self.parentLayout.addWidget(self.labelForce, 4, 0)
+
+        self.parentLayout.addWidget(self.boutonValider, 5,0)
+        self.parentLayout.addWidget(self.boutonAnnuler, 5,1)
 
         self.setLayout(self.parentLayout)
 
