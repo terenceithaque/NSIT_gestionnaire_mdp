@@ -38,4 +38,4 @@ if __name__ == "__main__":
         mot_de_passe = generer_mdp(taille_min, inclus)
         print()
         
-        print(f"{mot_de_passe} (force:{force_mdp.force(mot_de_passe)} bits)")
+        print(f"{mot_de_passe} (force:{mdp.force_mdp.force(mot_de_passe)} bits)")

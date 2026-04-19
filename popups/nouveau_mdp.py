@@ -2,6 +2,7 @@
 from PyQt6.QtWidgets import QDialog, QLineEdit, QGridLayout, QPushButton, QWidget, QLabel, QMessageBox
 import mdp.force_mdp
 import mdp.generer_mdp
+import string
 
 
 class DemandeNouveauMdp(QDialog):
@@ -33,6 +34,7 @@ class DemandeNouveauMdp(QDialog):
         self.bouton_afficher_cacher.clicked.connect(self.modifier_affichage_mdp)
 
         self.bouton_generer_mdp = QPushButton("Générer un mot de passe fort")
+        self.bouton_generer_mdp.clicked.connect(self.generer_mdp_fort)
 
 
         self.labelForce = QLabel(f"Force du mot de passe: 0 bits (<b>faible</b>)")
@@ -93,6 +95,14 @@ class DemandeNouveauMdp(QDialog):
         }
 
         return resultat
+    
+
+    def generer_mdp_fort(self) -> None:
+        """Génère un mot de passe fort et met à jour le champ de saisie du mot de passe."""
+
+        mot_de_passe = mdp.generer_mdp.generer_mdp(taille_min=12, inclus=[string.ascii_lowercase, string.ascii_uppercase, string.digits, string.punctuation])
+        self.champ_mdp.setText(mot_de_passe)
+        self.actualiser_force_mdp()
 
     def actualiser_force_mdp(self) -> None:
         """Actualise la force de mot de passe affichée pour refléter le mot de passe actuellement saisi."""
