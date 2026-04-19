@@ -1,48 +1,37 @@
 """Ce script permet de calculer la force d'un mot de passe en bits"""
 import math
-
+import string
 
 def taille_alphabet(mdp:str) -> int:
     """Renvoie la taille de l'alphabet utilisé dans le mot de passe donné"""
-    taille_alphabet = 0 # Taille de l'alphabet présent dans le mot de passe
     
-    # Série de booléens pour savoir quels types de caractères sont présents dans le mot de passe
-    min_presentes = False
-    maj_presentes = False
-    nombres_presents = False
-    speciaux_presents = False
     
-    # Parcourir les caractères du mot de passe
-    for caractere in mdp:
-        # Si des lettres minuscules n'ont pas déjà été détectées dans le mot de passe
-        if not min_presentes:
-            if caractere.isalpha() and caractere.lower()==caractere:
-                taille_alphabet += 26
-                min_presentes = True
-                continue
-        
-        # Si des lettres majuscules n'ont pas déjà été détectées dans le mot de passe
-        if not maj_presentes:
-            if caractere.isalpha() and caractere.upper()==caractere:
-                taille_alphabet += 26
-                maj_presentes = True
-                continue
-        
-        # Si des nombres n'ont pas déjà été détectés dans le mot de passe
-        if not nombres_presents:  
-            if caractere.isdigit():
-                taille_alphabet += 10
-                nombres_presents = True
-                continue
-            
-        # Si des caractères spéciaux n'ont pas été déjà détectés dans le mot de passe
-        if not speciaux_presents:
-            if not caractere.isalnum():
-                taille_alphabet += 32
-                speciaux_presents = True
-                continue
+    if not mdp:
+        return 0
     
-    return taille_alphabet
+    min_presentes = any(c in string.ascii_lowercase for c in mdp)
+    maj_presentes = any(c in string.ascii_uppercase for c in mdp)
+    nombres_presents = any(c in string.digits for c in mdp)
+    speciaux_presents = any(c in string.punctuation for c in mdp)
+
+    taille = 0
+
+    if min_presentes:
+        taille += 26
+
+    if maj_presentes:
+        taille += 26
+
+    if nombres_presents:
+        taille += 10
+
+    if speciaux_presents:
+        taille += len(string.punctuation)
+
+    return taille        
+
+    
+   
 
 
 def force(mdp:str) -> int:
