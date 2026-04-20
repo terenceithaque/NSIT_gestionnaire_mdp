@@ -93,7 +93,15 @@ class BDD:
     def maj_contenu(self, contenu:dict) -> None:
         """Met à jour le contenu de la base de données en utilisant le dictionnaire donné en paramètre."""
         self.contenu = contenu
+
+
+    def ajouter_entree(self, entree:dict) -> None:
+        """Crée une nouvelle entrée dans la table actuelle."""
         
+        self.curseur.execute(f"""INSERT INTO {self.table_actuelle} VALUES ({self.generer_id(self.table_actuelle)}, {entree["titreEntree"]}, {entree["nomUtil"]}, {entree["mdp"]})""")
+
+        self.est_enregistree = False
+
 
     def est_valide(self) -> bool:
         """Vérifie si la base de données a un contenu valide et renvoie True si c'est le cas, False sinon.

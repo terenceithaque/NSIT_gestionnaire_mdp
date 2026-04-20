@@ -165,9 +165,9 @@ class DemandeNouveauMdp(QDialog):
             if self.valider():
                 self.mdp_verifie, self.nom_util_verifie = True, True
                 self.forcer_fermeture = False
-                self.close()
+                self.accept()
 
         else:
             self.mdp_verifie, self.nom_util_verifie = False, False
             self.forcer_fermeture = True
-            self.close()                         
+            self.reject()                         

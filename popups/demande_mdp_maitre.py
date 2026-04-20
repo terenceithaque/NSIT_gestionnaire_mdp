@@ -39,7 +39,7 @@ class DemandeMdp(QDialog):
         self.bouton_afficher_cacher.clicked.connect(self.modifier_affichage_mdp)
         
         self.bouton_valider = QPushButton("OK") # Bouton pour valider la saisie
-        self.bouton_valider.clicked.connect(self.fermer)
+        self.bouton_valider.clicked.connect(lambda:self.fermer(validation=True))
 
         self.bouton_annuler = QPushButton("Annuler") # Bouton pour annuler et fermer la boîte de dialogue
         self.bouton_annuler.clicked.connect(lambda:self.fermer(validation=False))
@@ -121,10 +121,12 @@ class DemandeMdp(QDialog):
         if validation:
             if self.valider_mdp():
                 # Fermer la popup seulement si le mot de passe maître renseigné est valide
-                self.close()
+                print("Mot de passe valide -> accept()")
+                self.accept()
 
         else:
+            print("Mot de passe invalide -> reject()")
             self.mdp_verifie = False
             self.forcer_fermeture = True
-            self.close()        
+            self.reject()        
         

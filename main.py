@@ -1,5 +1,5 @@
 # Programme principal de l'application
-from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog, QListWidget, QMessageBox
+from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog, QListWidget, QMessageBox, QDialog
 from PyQt6.QtWidgets import QWidget
 from PyQt6.QtGui import QAction
 import popups.demande_mdp_maitre
@@ -123,9 +123,11 @@ class FenetreAppli(QMainWindow):
         popup_nouveau_mdp = popups.nouveau_mdp.DemandeNouveauMdp()
         resultat = popup_nouveau_mdp.exec()
 
-        if resultat and all([popup_nouveau_mdp.mdp_verifie, popup_nouveau_mdp.nom_util_verifie]):
+        if resultat == QDialog.DialogCode.Accepted:
             donnees_entree = popup_nouveau_mdp.obtenir_entrees()
             print("Données de l'entrée :", donnees_entree)
+            self.base.ajouter_entree(donnees_entree)
+            self.actualiser_liste_entrees(self.base.table_actuelle)
 
         else:
             print("Création de l'entrée annulée")    
@@ -136,6 +138,7 @@ class FenetreAppli(QMainWindow):
         """Change la table de la base de données actuellement affichée par celle donnée en paramètre."""
         self.base.changer_table_actuelle(table)
         self.actualiser_liste_entrees(self.base.table_actuelle)
+        self.setWindowTitle(f"{self.base.fichier} | {self.base.table_actuelle}")
 
     def verifier_enregistrement(self) -> None:
         """Vérifie si la base de données actuelle est enregistrée, et si ce n'est pas le cas, affiche une popup d'avertissement à l'utilisateur."""
@@ -240,7 +243,7 @@ class FenetreAppli(QMainWindow):
 
         resultat = popup_mdp_maitre.exec()
 
-        if resultat and popup_mdp_maitre.mdp_verifie:
+        if resultat == QDialog.DialogCode.Accepted:
             mdp_maitre = popup_mdp_maitre.obtenir_mdp() # Obtenir le mot de passe maître saisi par l'utilisateur
             print(f"Mot de passe maître: {mdp_maitre}")
             print(f"Hash du mot de passe maître: {mdp.hash.hash_mdp(mdp_maitre)}")
@@ -255,6 +258,9 @@ class FenetreAppli(QMainWindow):
                 print(f"Fichier choisi : {nouveau_fichier}")
 
                 self.base = bdd.bdd.BDD(nouveau_fichier)
+                self.base.reinitialiser()
+                self.base.changer_table_actuelle("Internet")
+                self.changer_table_actuelle("Internet")
                 self.base.enregistrer() # Enregistrer la base de données dans un fichier
                 self.hashs_maitres["hashes"].append(hash_mdp)
                 mdp.hash.enregistrer_hashs_maitres(self.hashs_maitres)
