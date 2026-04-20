@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QWidget
 from PyQt6.QtGui import QAction
 import popups.demande_mdp_maitre
 import popups.nouveau_mdp
+import popups.creation_groupe
 import bdd.bdd
 import mdp.hash
 
