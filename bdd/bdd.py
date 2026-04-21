@@ -1,6 +1,7 @@
 """bdd.py contient une classe BDD représentant une base de données SQLite de mots de passe."""
 import sqlite3
 import os
+import mdp.hash
 
 class BDD:
     """Une base de données SQLite contenant des mots de passe."""
@@ -36,6 +37,11 @@ class BDD:
     def fichier_existant(self) -> bool:
         """Renvoie True si le fichier de la base de données existe, False sinon."""
         return os.path.exists(self.fichier)
+    
+    
+    def maj_master(self, mot_de_passe:str) -> None:
+        """Met à jour la table Master contenant le hash du mot de passe maître."""
+        self.curseur.execute(f"""UPDATE Master SET MasterMdp='{mdp.hash(mot_de_passe)};'""")
     
 
     def creer_table(self, table:str) -> None:

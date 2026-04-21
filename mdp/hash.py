@@ -33,16 +33,23 @@ def enregistrer_hashs_maitres(contenu:dict) -> None:
 
 def verifier_mdp(mdp:str, hashes:list) -> bool:
     """Compare le hash du mot de passe donné avec la liste de hashs donnée et renvoie True s'il y a une correspondance, False sinon."""
-
+    
+    print("Mot de passe saisi:", mdp)
+    h = hash_mdp(mdp)
+    print("Hash du mot de passe:", h)
+    print("Hashs disponibles:", hashes)
+    
     ph = PasswordHasher()
     for h in hashes:
         try:
             if ph.verify(h, mdp):
+                print("Mot de passe correct !")
                 return True
         except Exception as e:
             print(e)
             continue
-
+    
+    print("Mot de passe incorrect !")
     return False            
 
 
