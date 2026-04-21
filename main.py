@@ -156,20 +156,6 @@ class FenetreAppli(QMainWindow):
         self.actualiser_liste_entrees(self.base.table_actuelle)
         self.setWindowTitle(f"{self.base.fichier} | {self.base.table_actuelle}")
 
-    def verifier_enregistrement(self) -> None:
-        """Vérifie si la base de données actuelle est enregistrée, et si ce n'est pas le cas, affiche une popup d'avertissement à l'utilisateur."""
-
-        # Afficher une popup si la base de données n'est pas enregistrée
-        if not self.base.est_enregistree:
-            enregistrer = QMessageBox.warning(self, 
-                                              "Enregistrer la base de données ?", 
-                                              """Si vous n'enregistrez pas la base de données, les dernières modifications seront perdues. 
-                                              \n Enregistrer les modifications ?""",
-                                              QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel
-                                              )
-            
-            if enregistrer:
-                self.enregistrer()
             
 
     
