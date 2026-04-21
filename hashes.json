@@ -5,6 +5,7 @@
         "$argon2id$v=19$m=65536,t=3,p=4$cXC41Pz/E+KczBpXzr1b3Q$AwBTMjO5UvZIZT/+WyXW8yTh+wTfQknKzo+aXXunq0k",
         "$argon2id$v=19$m=65536,t=3,p=4$tcjV8l/Q6H/inhOc1lyqEw$im9vF9BOQ1xGL9Bvra+F4AL0ih2L7eeSxwLIHdaCEgQ",
         "$argon2id$v=19$m=65536,t=3,p=4$+d3MuqogDF2LUtvOIq8Vnw$44fijjtt/O/ZOwhKYBVSA0F50/uIhbEMe27qHxvALHg",
-        "$argon2id$v=19$m=65536,t=3,p=4$Vfm8dSNiD/Mi9QFEO5z8ug$+Akd2Lhc8lfcYgPD9fFu/he9UBpA6CRW3nWcsZoMkww"
+        "$argon2id$v=19$m=65536,t=3,p=4$Vfm8dSNiD/Mi9QFEO5z8ug$+Akd2Lhc8lfcYgPD9fFu/he9UBpA6CRW3nWcsZoMkww",
+        "$argon2id$v=19$m=65536,t=3,p=4$Dgtpf7VV5JP0b1fFZ7OiXw$x97plkI0ckH0dE33F+tgq5SP8mhkHMpKZ4iyZyKpwCs"
     ]
 }

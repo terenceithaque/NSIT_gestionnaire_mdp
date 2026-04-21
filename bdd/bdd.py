@@ -98,7 +98,7 @@ class BDD:
     def ajouter_entree(self, entree:dict) -> None:
         """Crée une nouvelle entrée dans la table actuelle."""
         
-        self.curseur.execute(f"""INSERT INTO {self.table_actuelle} VALUES ({self.generer_id(self.table_actuelle)}, {entree["titreEntree"]}, {entree["nomUtil"]}, {entree["mdp"]})""")
+        self.curseur.execute(f"""INSERT INTO {self.table_actuelle} VALUES ({self.generer_id(self.table_actuelle)}, '{entree["titreEntree"]}', '{entree["nomUtil"]}', '{entree["mdp"]}')""")
 
         self.est_enregistree = False
 

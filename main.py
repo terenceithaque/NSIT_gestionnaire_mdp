@@ -133,7 +133,22 @@ class FenetreAppli(QMainWindow):
         else:
             print("Création de l'entrée annulée")    
 
-            
+
+    def creer_groupe(self) -> None:
+        """Demande à l'utilisateur le nom d'un groupe et le crée."""
+
+        popup_creation_groupe = popups.creation_groupe.DemandeCreerGroupe()
+        resultat = popup_creation_groupe.exec()
+
+        if resultat == QDialog.DialogCode.Accepted and popup_creation_groupe.nom_groupe_valide:
+            table = popup_creation_groupe.champ_nom_groupe.text()
+            self.base.creer_table(table)
+            self.base.changer_table_actuelle(table)
+            self.changer_table_actuelle(table)
+
+        else:
+            print("Création du groupe annulée")    
+
     
     def changer_table_actuelle(self, table:str) -> None:
         """Change la table de la base de données actuellement affichée par celle donnée en paramètre."""
