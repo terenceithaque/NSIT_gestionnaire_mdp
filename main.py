@@ -52,7 +52,7 @@ class FenetreAppli(QMainWindow):
         
         quitter_app = QAction("Quitter", self)
         quitter_app.setShortcut("Ctrl+Q")
-        quitter_app.triggered.connect(self.close)
+        quitter_app.triggered.connect(self.quitter)
         self.menu_fichier.addAction(quitter_app)
         
         # Menu "Entrées"
@@ -284,7 +284,33 @@ class FenetreAppli(QMainWindow):
         else:
             print("Création de la base de données annulée")                        
 
+    
+    def quitter(self) -> None:
+        """Quitte l'application en vérifiant que la base de données ouverte est enregistrée."""
 
+        if self.base is not None:
+            if not self.base.est_enregistree:
+                demande_enregistrement = QMessageBox.warning(self, "Enregistrer avant de quitter ?", "Vous êtes sur le point de quitter l'application, ce qui va entraîner la perte des modifications non enregistrées. Voulez-vous enregistrer avant de quitter ?",
+                                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel)
+                
+                if demande_enregistrement == QMessageBox.StandardButton.Yes:
+                    print("Enregistrement de la base de données")
+                    self.enregistrer()
+                    self.close()
+
+                elif demande_enregistrement == QMessageBox.StandardButton.No:
+                    print("Fermeture de l'application sans enregistrer")
+                    self.close()
+
+                elif demande_enregistrement == QMessageBox.StandardButton.Cancel:
+                    print("Annulation de la fermeture")
+
+
+                
+
+
+        else:
+            self.close()
 
 
 
