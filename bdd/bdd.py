@@ -47,8 +47,7 @@ class BDD:
     def creer_table(self, table:str) -> None:
         """Crée une nouvelle table dans la base de données."""
 
-        self.curseur.execute(f""""CREATE TABLE {table}
-                            
+        self.curseur.execute(f"""CREATE TABLE {table}
                             id EntryID PRIMARY KEY,
                             nomEntreeText,
                             nomUtil TEXT,
@@ -78,6 +77,7 @@ class BDD:
                              nomUtil TEXT,
                              email TEXT)""")    
 
+        self.tables = self.recuperer_tables()
         self.enregistrer() # Enregistrer les modifications
 
     def changer_table_actuelle(self, table:str) -> None:

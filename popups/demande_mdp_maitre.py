@@ -118,10 +118,14 @@ class DemandeMdp(QDialog):
         - validation: booléen, ayant pour valeur True par défaut. Si la valeur de ce booléen est True, la fermeture de la popup va être empêchée tant que le mot de passe saisi n'est pas valide.
           Autrement, la popup est fermée sans validation préalable."""
 
+
+        print("Mot de passe vérifié :", self.mdp_verifie)
         if validation:
             if self.valider_mdp():
                 # Fermer la popup seulement si le mot de passe maître renseigné est valide
                 print("Mot de passe valide -> accept()")
+                #self.mdp_verifie = True
+                self.forcer_fermeture = False
                 self.accept()
 
         else:

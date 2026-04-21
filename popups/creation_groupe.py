@@ -5,6 +5,8 @@ from PyQt6.QtWidgets import QDialog, QLineEdit, QGridLayout, QPushButton, QWidge
 class DemandeCreerGroupe(QDialog):
     """Popup permettant à l'utilisateur de saisir le nom d'un nouveau groupe et de le créer."""
     def __init__(self) -> None:
+        super().__init__()
+
         self.setWindowTitle("Création d'un groupe")
 
         self.parentLayout = QGridLayout()
@@ -16,6 +18,16 @@ class DemandeCreerGroupe(QDialog):
 
         self.bouton_valider = QPushButton("OK")
         self.bouton_annuler = QPushButton("Annuler")
+
+        self.bouton_valider.clicked.connect(lambda:self.fermer(validation=True))
+        self.bouton_annuler.clicked.connect(lambda:self.fermer(validation=False))
+
+        self.parentLayout.addWidget(self.champ_nom_groupe, 1,0)
+
+        self.parentLayout.addWidget(self.bouton_valider, 2,0)
+        self.parentLayout.addWidget(self.bouton_annuler, 2,1)
+
+        self.setLayout(self.parentLayout)
 
 
     def fermer(self, validation=True) -> None:

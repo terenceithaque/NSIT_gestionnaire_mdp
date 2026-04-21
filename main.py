@@ -67,6 +67,7 @@ class FenetreAppli(QMainWindow):
         # Ajouter l'action de création d'un groupe
         creer_groupe = QAction("Créer un groupe", self)
         creer_groupe.setShortcut("Ctrl+G")
+        creer_groupe.triggered.connect(self.creer_groupe)
         self.menu_groupes.addAction(creer_groupe)
         
         
@@ -103,6 +104,19 @@ class FenetreAppli(QMainWindow):
 
         else:
             self.creer_base()
+
+
+    def nouveau_groupe(self) -> None:
+        """Permet à l'utilisateur de créer une nouvelle table dans la base de données."""
+        popup_creation_groupe = popups.creation_groupe.DemandeCreerGroupe()
+
+        resultat = popup_creation_groupe.exec()
+
+        if resultat and popup_creation_groupe.nom_groupe_valide:
+            table = popup_creation_groupe.champ_nom_groupe.text()
+            self.base.creer_table(table)
+            self.base.changer_table_actuelle(table)
+            self.changer_table_actuelle(table)
 
 
     def enregistrer(self) -> None:
