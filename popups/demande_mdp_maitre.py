@@ -99,17 +99,7 @@ class DemandeMdp(QDialog):
     def closeEvent(self, event):
         """Ferme la popup en vérifiant que le mot de passe maître renseigné est valide, dans le cas où l'utilisateur a cliqué sur la croix de la popup, sauf s'il faut forcer la fermeture."""
 
-        if self.forcer_fermeture:
-            event.accept()
-            return
-        
-        if self.valider_mdp():
-            self.mdp_verifie = True
-            event.accept()
-
-        else:
-            self.mdp_verifie = False
-            event.ignore()    
+        event.accept()
     
 
 
@@ -122,15 +112,10 @@ class DemandeMdp(QDialog):
         print("Mot de passe vérifié :", self.mdp_verifie)
         if validation:
             if self.valider_mdp():
-                # Fermer la popup seulement si le mot de passe maître renseigné est valide
-                print("Mot de passe valide -> accept()")
-                #self.mdp_verifie = True
-                self.forcer_fermeture = False
-                self.accept()
+                self.accept()     
+            
+            else:
+                self.reject()
 
         else:
-            print("Mot de passe invalide -> reject()")
-            self.mdp_verifie = False
-            self.forcer_fermeture = True
-            self.reject()        
-        
+            self.accept()        

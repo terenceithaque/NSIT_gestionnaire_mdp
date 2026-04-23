@@ -115,7 +115,7 @@ class BDD:
 
         if "Master" and "Internet" in self.tables:
             contenu_master = self.contenu_table("Master")
-            assert len(contenu_master) == 1
+            assert 0 <= len(contenu_master) <= 1
 
             contenu_internet = self.contenu_table("Internet")
             for compte in contenu_internet:

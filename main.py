@@ -210,7 +210,7 @@ class FenetreAppli(QMainWindow):
             resultat_mdp = popup_mdp_maitre.exec()
 
 
-            if resultat_mdp and popup_mdp_maitre.mdp_verifie:
+            if resultat_mdp == QDialog.DialogCode.Accepted:
                 fichier_selectionne = dialogue_fichier.selectedFiles()[0]
                 self.base = bdd.bdd.BDD(fichier_selectionne)
 
