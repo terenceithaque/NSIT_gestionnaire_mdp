@@ -47,11 +47,12 @@ class BDD:
     def creer_table(self, table:str) -> None:
         """Crée une nouvelle table dans la base de données."""
 
-        self.curseur.execute(f"""CREATE TABLE {table}
-                            id EntryID PRIMARY KEY,
-                            nomEntreeText,
+        self.curseur.execute(f"""CREATE TABLE '{table}'
+                            (id INTEGER PRIMARY KEY,
+                            nomEntree TEXT,
                             nomUtil TEXT,
-                            email TEXT;""")
+                            email TEXT);
+                             """)
 
         self.tables = self.recuperer_tables() # Mettre à jour la liste des tables
         self.contenu = self.contenu_base() # Mettre à jour le contenu de la base

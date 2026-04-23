@@ -159,6 +159,7 @@ class FenetreAppli(QMainWindow):
             self.base.creer_table(table)
             self.base.changer_table_actuelle(table)
             self.changer_table_actuelle(table)
+            self.actualiser_menu_groupes()
 
         else:
             print("Création du groupe annulée")    
@@ -180,7 +181,9 @@ class FenetreAppli(QMainWindow):
         # Ajouter l'action de création d'un groupe
         creer_groupe = QAction("Créer un groupe", self)
         creer_groupe.setShortcut("Ctrl+G")
+        creer_groupe.triggered.connect(self.creer_groupe)
         self.menu_groupes.addAction(creer_groupe)
+
         
         self.menu_groupes.addSeparator()
         
