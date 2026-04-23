@@ -308,6 +308,9 @@ class FenetreAppli(QMainWindow):
                 elif demande_enregistrement == QMessageBox.StandardButton.Cancel:
                     print("Annulation de la fermeture")
 
+            else:
+                self.close()        
+
 
                 
 
