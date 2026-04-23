@@ -72,6 +72,7 @@ class FenetreAppli(QMainWindow):
         
         
         self.liste_entrees = QListWidget()
+        self.liste_entrees.itemDoubleClicked.connect(self.editer_entree)
         self.parentLayout.addWidget(self.liste_entrees)
 
         # Widget central de la fenêtre
@@ -132,6 +133,13 @@ class FenetreAppli(QMainWindow):
                 self.enregistrer_sous()
 
     
+    def editer_entree(self) -> None:
+        """Permet à l'utilisateur d'éditer une entrée existante."""
+
+        entree_selectionne = self.liste_entrees.currentItem()
+
+        print("Item sélectionné :", entree_selectionne.text())
+
     def nouveau_mdp(self) -> None:
         """Demande à l'utilisateur de saisir un mot de passe à ajouter dans la base de données."""
 
@@ -249,7 +257,7 @@ class FenetreAppli(QMainWindow):
         self.liste_entrees.clear() # Supprimer les entrées précédentes
 
         for compte in contenu_table:
-            infos = [str(info) + "|" for info in compte]
+            infos = [str(info) for info in compte]
             self.liste_entrees.addItem(str(infos)) 
 
             
