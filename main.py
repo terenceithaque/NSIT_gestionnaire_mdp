@@ -1,9 +1,11 @@
 # Programme principal de l'application
-from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog, QListWidget, QMessageBox, QDialog
+from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog, QListWidget, QMessageBox, QDialog, QListWidgetItem
 from PyQt6.QtWidgets import QWidget
 from PyQt6.QtGui import QAction
+from PyQt6.QtCore import Qt
 import popups.demande_mdp_maitre
 import popups.nouveau_mdp
+import popups.edition_mdp
 import popups.creation_groupe
 import bdd.bdd
 import mdp.hash
@@ -136,9 +138,24 @@ class FenetreAppli(QMainWindow):
     def editer_entree(self) -> None:
         """Permet à l'utilisateur d'éditer une entrée existante."""
 
-        entree_selectionne = self.liste_entrees.currentItem()
+        entree_selectionnee = self.liste_entrees.currentItem()
 
-        print("Item sélectionné :", entree_selectionne.text())
+        if entree_selectionnee is not None:
+
+            donnees = entree_selectionnee.data(Qt.ItemDataRole.UserRole)
+            print(f"Données : {donnees}")
+
+            dict_donnees = {
+                "titreEntree": donnees[1],
+                "nomUtil": donnees[2],
+                "mdp": donnees[3]
+            }
+
+            print(dict_donnees)
+
+            popup_edition_mdp = popups.edition_mdp.EditeMdp(dict_donnees) # Popup d'édition des données
+            resultat = popup_edition_mdp.exec() # Exécuter la popup
+
 
     def nouveau_mdp(self) -> None:
         """Demande à l'utilisateur de saisir un mot de passe à ajouter dans la base de données."""
@@ -257,8 +274,9 @@ class FenetreAppli(QMainWindow):
         self.liste_entrees.clear() # Supprimer les entrées précédentes
 
         for compte in contenu_table:
-            infos = [str(info) for info in compte]
-            self.liste_entrees.addItem(str(infos)) 
+            item = QListWidgetItem(compte[1])
+            item.setData(Qt.ItemDataRole.UserRole, compte)
+            self.liste_entrees.addItem(item)
 
             
 
