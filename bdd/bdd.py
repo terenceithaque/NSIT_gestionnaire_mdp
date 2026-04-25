@@ -1,17 +1,19 @@
 """bdd.py contient une classe BDD représentant une base de données SQLite de mots de passe."""
-import sqlite3
+from sqlcipher3 import dbapi2 as sqlite
 import os
 import mdp.hash
 
 class BDD:
     """Une base de données SQLite contenant des mots de passe."""
-    def __init__(self, fichier="new_file.db"):
+    def __init__(self, fichier="new_file.db", mdp:str=""):
         
         self.fichier = fichier # Fichier de la base de données
         print(self.fichier)
 
         # Connexion à la base de données
-        self.connexion = sqlite3.Connection(self.fichier)
+        self.connexion = sqlite.connect(self.fichier)
+
+        self.connexion.execute(f"PRAGMA key = '{mdp}'")
         self.curseur = self.connexion.cursor()
 
         # Récupérer toutes les tables du fichier

@@ -240,7 +240,7 @@ class FenetreAppli(QMainWindow):
 
             if resultat_mdp == QDialog.DialogCode.Accepted:
                 fichier_selectionne = dialogue_fichier.selectedFiles()[0]
-                self.base = bdd.bdd.BDD(fichier_selectionne)
+                self.base = bdd.bdd.BDD(fichier_selectionne, popup_mdp_maitre.champMdp.text())
 
                 if not self.base.est_valide():
                     reponse = QMessageBox.warning(self, "Base de données invalide", 
@@ -302,7 +302,7 @@ class FenetreAppli(QMainWindow):
             if nouveau_fichier:
                 print(f"Fichier choisi : {nouveau_fichier}")
 
-                self.base = bdd.bdd.BDD(nouveau_fichier)
+                self.base = bdd.bdd.BDD(nouveau_fichier, popup_mdp_maitre.champMdp.text())
                 self.base.reinitialiser()
                 self.base.changer_table_actuelle("Internet")
                 self.changer_table_actuelle("Internet")
