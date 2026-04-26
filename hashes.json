@@ -1,6 +1,7 @@
 {
     "hashes": [
         "$argon2id$v=19$m=65536,t=3,p=4$KkkqhAvxuF/By5TzWCCvNA$r9y7r0peoBLqUxYvDKydkEw/ChcU2cjpdnS4OQm0G+A",
-        "$argon2id$v=19$m=65536,t=3,p=4$M3K1a952KthPeyJjQSv6pg$+wLmcVdVsE8LpamjIYgHTAxev5qpCBA+27b0NYao+BY"
+        "$argon2id$v=19$m=65536,t=3,p=4$M3K1a952KthPeyJjQSv6pg$+wLmcVdVsE8LpamjIYgHTAxev5qpCBA+27b0NYao+BY",
+        "$argon2id$v=19$m=65536,t=3,p=4$f6r9iuDEyB/hfmExOhfA1Q$/Mh5WKqEYQRqzDUN3EuDoVlelkE0MRXJc+7Fj8K5pfM"
     ]
 }

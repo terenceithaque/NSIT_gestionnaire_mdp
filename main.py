@@ -56,6 +56,14 @@ class FenetreAppli(QMainWindow):
         quitter_app.setShortcut("Ctrl+Q")
         quitter_app.triggered.connect(self.quitter)
         self.menu_fichier.addAction(quitter_app)
+
+        # Menu "Édition"
+        self.menu_edition = self.barre_menus.addMenu("Édition")
+
+        self.sous_menu_copie = self.menu_edition.addMenu("Copie")
+        copie_titre = self.sous_menu_copie.addAction("Titre")
+        copie_nom_util = self.sous_menu_copie.addAction("Nom d'utilisateur")
+        copie_mdp = self.sous_menu_copie.addAction("Mot de passe")
         
         # Menu "Entrées"
         self.menu_entrees = self.barre_menus.addMenu("Entrées")
