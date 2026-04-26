@@ -1,5 +1,5 @@
 # Programme principal de l'application
-from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog, QListWidget, QMessageBox, QDialog, QListWidgetItem
+from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog, QListWidget, QMessageBox, QDialog, QListWidgetItem, QMenu
 from PyQt6.QtWidgets import QWidget
 from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt
@@ -90,6 +90,11 @@ class FenetreAppli(QMainWindow):
         self.liste_entrees.itemDoubleClicked.connect(self.editer_entree)
         self.parentLayout.addWidget(self.liste_entrees)
 
+        # Menu d'action contextuel
+        self.liste_entrees.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.liste_entrees.customContextMenuRequested.connect(self.afficher_menu_contextuel)
+
+
         # Widget central de la fenêtre
         self.centralWidget = QWidget()
         self.centralWidget.setLayout(self.parentLayout)
@@ -114,6 +119,31 @@ class FenetreAppli(QMainWindow):
             print(donnees)
             clipboard.copy(donnees[rang])
 
+
+    def afficher_menu_contextuel(self, position) -> None:
+        """Affiche un menu contextuel permettant à l'utilisateur de faire des actions rapides sur l'entrée située à la position donnée."""
+
+        entree_selectionnee = self.liste_entrees.itemAt(position)
+
+        if entree_selectionnee is None:
+            return
+
+        menu = QMenu()
+
+        copie_titre = menu.addAction("Copier le titre")
+        copie_nom_util = menu.addAction("Copier le nom d'utilisateur")
+        copie_mdp = menu.addAction("Copier le mot de passe")
+
+        action = menu.exec(self.liste_entrees.mapToGlobal(position))
+
+        if action == copie_titre:
+            self.copier_donnee(1)
+
+        elif action == copie_nom_util:
+            self.copier_donnee(2)
+
+        elif action == copie_mdp:
+            self.copier_donnee(3)
         
 
     def enregistrer_sous(self) -> None:
