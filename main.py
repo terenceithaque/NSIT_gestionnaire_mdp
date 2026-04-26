@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QFileDialog,
 from PyQt6.QtWidgets import QWidget
 from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt
+import clipboard
 import popups.demande_mdp_maitre
 import popups.nouveau_mdp
 import popups.edition_mdp
@@ -62,9 +63,13 @@ class FenetreAppli(QMainWindow):
 
         self.sous_menu_copie = self.menu_edition.addMenu("Copie")
         copie_titre = self.sous_menu_copie.addAction("Titre")
+        copie_titre.triggered.connect(lambda:self.copier_donnee(1))
+
         copie_nom_util = self.sous_menu_copie.addAction("Nom d'utilisateur")
+        copie_nom_util.triggered.connect(lambda:self.copier_donnee(2))
+
         copie_mdp = self.sous_menu_copie.addAction("Mot de passe")
-        
+        copie_mdp.triggered.connect(lambda:self.copier_donnee(3))
         # Menu "Entrées"
         self.menu_entrees = self.barre_menus.addMenu("Entrées")
         ajouter_entree = QAction("Nouvelle entrée", self)
@@ -97,6 +102,17 @@ class FenetreAppli(QMainWindow):
         # Base de données actuellement ouverte
         self.base = None
 
+
+
+    def copier_donnee(self, rang=0) -> None:
+        """Copie dans le presse-papiers la donnée située au rang indiqué dans l'entrée actuellement sélectionnée."""
+
+        entree_selectionnee = self.liste_entrees.currentItem() # Récupérer l'entrée actuellement sélectionnée
+
+        if entree_selectionnee is not None:
+            donnees = entree_selectionnee.data(Qt.ItemDataRole.UserRole)
+            print(donnees)
+            clipboard.copy(donnees[rang])
 
         
 
