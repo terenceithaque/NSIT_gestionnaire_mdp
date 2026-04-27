@@ -49,6 +49,22 @@ class BDD:
         self.curseur.execute(f"DELETE FROM {self.table_actuelle} WHERE id={id};")    
 
         self.est_enregistree = False
+
+
+    def maj_entree(self, donnees:dict, id=1) -> None:
+        """Met à jour l'entrée référencée par l'ID indiqué dans la table actuelle en utilisant le dictionnaire de données passé en paramètre."""
+
+        # Récupérer les données de l'entrée
+        titre = donnees["titreEntree"]
+        nom_util = donnees["nomUtil"]
+        mot_de_passe = donnees["mdp"]
+
+        # Mettre à jour l'entrée
+        self.curseur.execute(f"UPDATE {self.table_actuelle} SET nomEntree='{titre}', nomUtil='{nom_util}', mdp='{mot_de_passe}';")
+
+        self.est_enregistree = False
+
+
     
     
     def maj_master(self, mot_de_passe:str) -> None:
@@ -63,7 +79,7 @@ class BDD:
                             (id INTEGER PRIMARY KEY,
                             nomEntree TEXT,
                             nomUtil TEXT,
-                            email TEXT);
+                            mdp TEXT);
                              """)
 
         self.tables = self.recuperer_tables() # Mettre à jour la liste des tables
@@ -88,7 +104,7 @@ class BDD:
                              id INTEGER PRIMARY KEY,
                              nomEntree TEXT,
                              nomUtil TEXT,
-                             email TEXT)""")    
+                             mdp TEXT)""")    
 
         self.tables = self.recuperer_tables()
         self.enregistrer() # Enregistrer les modifications

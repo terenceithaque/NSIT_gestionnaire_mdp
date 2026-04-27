@@ -8,6 +8,8 @@ class EditeMdp(popups.nouveau_mdp.DemandeNouveauMdp):
     def __init__(self, donnees_entree:dict) -> None:
         super().__init__() # Hériter de l'ensemble des attributs de la classe DemandeNouveauMdp
 
+        self.setWindowTitle("Éditer l'entrée")
+
         self.donnees_entree = donnees_entree # Dictionnaire contenant l'ensemble de données de l'entrée (nom d'utilisateur, mot de passe, etc).
 
         # Récupérer les textes saisis dans les différents champs de l'entrée

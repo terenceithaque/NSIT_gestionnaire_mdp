@@ -70,12 +70,18 @@ class FenetreAppli(QMainWindow):
 
         copie_mdp = self.sous_menu_copie.addAction("Mot de passe")
         copie_mdp.triggered.connect(lambda:self.copier_donnee(3))
+        
         # Menu "Entrées"
         self.menu_entrees = self.barre_menus.addMenu("Entrées")
         ajouter_entree = QAction("Nouvelle entrée", self)
         ajouter_entree.setShortcut("Ctrl+E")
         ajouter_entree.triggered.connect(self.nouveau_mdp)
         self.menu_entrees.addAction(ajouter_entree)
+
+        editer_entree = QAction("Éditer l'entrée", self)
+        editer_entree.setShortcut("Ctrl+Space")
+        editer_entree.triggered.connect(self.editer_entree)
+        self.menu_entrees.addAction(editer_entree)
 
         supprimer_entree = QAction("Supprimer l'entrée", self)
         supprimer_entree.setShortcut("Ctrl+D")
@@ -156,14 +162,23 @@ class FenetreAppli(QMainWindow):
 
         menu = QMenu()
 
+        edit_entree = menu.addAction("Éditer l'entrée")
+        suppr_entree = menu.addAction("Supprimer l'entrée")
         copie_titre = menu.addAction("Copier le titre")
         copie_nom_util = menu.addAction("Copier le nom d'utilisateur")
         copie_mdp = menu.addAction("Copier le mot de passe")
-        suppr_entree = menu.addAction("Supprimer l'entrée")
+        
 
         action = menu.exec(self.liste_entrees.mapToGlobal(position))
 
-        if action == copie_titre:
+
+        if action == edit_entree:
+            self.editer_entree()
+
+        elif action == suppr_entree:
+            self.supprimer_entree_selectionnee()  
+
+        elif action == copie_titre:
             self.copier_donnee(1)
 
         elif action == copie_nom_util:
@@ -172,8 +187,7 @@ class FenetreAppli(QMainWindow):
         elif action == copie_mdp:
             self.copier_donnee(3)
 
-        elif action == suppr_entree:
-            self.supprimer_entree_selectionnee()    
+          
         
 
     def enregistrer_sous(self) -> None:
@@ -227,7 +241,10 @@ class FenetreAppli(QMainWindow):
         if entree_selectionnee is not None:
 
             donnees = entree_selectionnee.data(Qt.ItemDataRole.UserRole)
+            print(donnees)
+
             print(f"Données : {donnees}")
+            id_entree = donnees[0]
 
             dict_donnees = {
                 "titreEntree": donnees[1],
@@ -240,6 +257,10 @@ class FenetreAppli(QMainWindow):
             popup_edition_mdp = popups.edition_mdp.EditeMdp(dict_donnees) # Popup d'édition des données
             resultat = popup_edition_mdp.exec() # Exécuter la popup
 
+            if resultat == QDialog.DialogCode.Accepted:
+                donnees_maj = popup_edition_mdp.obtenir_entrees()
+                self.base.maj_entree(donnees_maj, id_entree)
+                self.actualiser_liste_entrees(self.base.table_actuelle)
 
     def nouveau_mdp(self) -> None:
         """Demande à l'utilisateur de saisir un mot de passe à ajouter dans la base de données."""
