@@ -76,6 +76,11 @@ class FenetreAppli(QMainWindow):
         ajouter_entree.setShortcut("Ctrl+E")
         ajouter_entree.triggered.connect(self.nouveau_mdp)
         self.menu_entrees.addAction(ajouter_entree)
+
+        supprimer_entree = QAction("Supprimer l'entrée", self)
+        supprimer_entree.setShortcut("Ctrl+D")
+        supprimer_entree.triggered.connect(self.supprimer_entree_selectionnee)
+        self.menu_entrees.addAction(supprimer_entree)
         
         # Menu "Groupes"
         self.menu_groupes = self.barre_menus.addMenu("Groupes")
@@ -120,6 +125,27 @@ class FenetreAppli(QMainWindow):
             clipboard.copy(donnees[rang])
 
 
+    def supprimer_entree_selectionnee(self) -> None:
+        """Supprime l'entrée sélectionnée par l'utilisateur de la table actuelle."""
+
+        entree_selectionnee = self.liste_entrees.currentItem()  # Récupérer l'entrée sélectionnée
+
+        if entree_selectionnee is not None:
+
+            confirmation = QMessageBox.warning(self, "Suppression d'une entrée", "Attention ! La suppression d'une entrée est irréversible. Êtes-vous sûr(e) de vouloir faire cela ?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+
+            if confirmation == QMessageBox.StandardButton.Yes:
+                # On récupère les données et l'ID de l'entrée
+                donnees = entree_selectionnee.data(Qt.ItemDataRole.UserRole)
+                id_entree = donnees[0]
+
+                # Supprimer l'entrée
+                self.base.supprimer_entree(id_entree)
+
+                # Actualiser la liste graphique
+                self.actualiser_liste_entrees(self.base.table_actuelle)      
+
+
     def afficher_menu_contextuel(self, position) -> None:
         """Affiche un menu contextuel permettant à l'utilisateur de faire des actions rapides sur l'entrée située à la position donnée."""
 
@@ -133,6 +159,7 @@ class FenetreAppli(QMainWindow):
         copie_titre = menu.addAction("Copier le titre")
         copie_nom_util = menu.addAction("Copier le nom d'utilisateur")
         copie_mdp = menu.addAction("Copier le mot de passe")
+        suppr_entree = menu.addAction("Supprimer l'entrée")
 
         action = menu.exec(self.liste_entrees.mapToGlobal(position))
 
@@ -144,6 +171,9 @@ class FenetreAppli(QMainWindow):
 
         elif action == copie_mdp:
             self.copier_donnee(3)
+
+        elif action == suppr_entree:
+            self.supprimer_entree_selectionnee()    
         
 
     def enregistrer_sous(self) -> None:
@@ -313,6 +343,7 @@ class FenetreAppli(QMainWindow):
                 print("Ouverture de la base de données annulée")            
 
             if self.base is not None:
+                self.base.changer_table_actuelle("Internet")
                 self.actualiser_liste_entrees("Internet")
                 self.actualiser_menu_groupes()
                 

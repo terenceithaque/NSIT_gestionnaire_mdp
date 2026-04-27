@@ -39,6 +39,16 @@ class BDD:
     def fichier_existant(self) -> bool:
         """Renvoie True si le fichier de la base de données existe, False sinon."""
         return os.path.exists(self.fichier)
+
+
+    def supprimer_entree(self, id=1) -> None:
+        """Supprime l'entrée référencée par l'ID indiqué dans la table actuelle de la base."""
+
+        print("Table actuelle :", self.table_actuelle)
+        # Supprimer l'entrée de la table actuelle
+        self.curseur.execute(f"DELETE FROM {self.table_actuelle} WHERE id={id};")    
+
+        self.est_enregistree = False
     
     
     def maj_master(self, mot_de_passe:str) -> None:
@@ -75,7 +85,7 @@ class BDD:
                              MasterMdp TEXT NOT NULL)""")
 
         self.curseur.execute(f"""CREATE TABLE Internet (
-                             id EntryID PRIMARY KEY,
+                             id INTEGER PRIMARY KEY,
                              nomEntree TEXT,
                              nomUtil TEXT,
                              email TEXT)""")    
