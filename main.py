@@ -128,6 +128,7 @@ class FenetreAppli(QMainWindow):
         if entree_selectionnee is not None:
             donnees = entree_selectionnee.data(Qt.ItemDataRole.UserRole)
             print(donnees)
+            #copie_temp.copie_timeout(donnees, 12)
             clipboard.copy(donnees[rang])
 
 
