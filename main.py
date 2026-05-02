@@ -95,6 +95,12 @@ class FenetreAppli(QMainWindow):
         creer_groupe.setShortcut("Ctrl+G")
         creer_groupe.triggered.connect(self.creer_groupe)
         self.menu_groupes.addAction(creer_groupe)
+
+        # Action de suppression du groupe actuel
+        suppr_groupe_actuel = QAction("Supprimer le groupe actuel", self)
+        suppr_groupe_actuel.setShortcut("Ctrl+Shift+D")
+        suppr_groupe_actuel.triggered.connect(self.supprimer_table_actuelle)
+        self.menu_groupes.addAction(suppr_groupe_actuel)
         
         
         self.liste_entrees = QListWidget()
@@ -131,6 +137,24 @@ class FenetreAppli(QMainWindow):
             #copie_temp.copie_timeout(donnees, 12)
             clipboard.copy(donnees[rang])
 
+
+    def supprimer_table_actuelle(self) -> None:
+        """Supprime la table actuelle de la base de données après confirmation utilisateur."""
+
+
+        if self.base.table_actuelle == "Master" or self.base.table_actuelle == "Internet":
+            QMessageBox.critical(self, "Impossible de supprimer la table", f"Impossible de supprimer la table: {self.base.table_actuelle}")
+            return
+
+        # Demander confirmation à l'utilisateur
+        confirmation = QMessageBox.warning(self, "Supprimer la table actuelle ?", f"Vous êtes sur le point de supprimer la table actuelle ({self.base.table_actuelle}) ce qui va l'effacer intégralement. Êtes-vous sûr(e) de faire cela ?",
+                                           QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)        
+
+        if confirmation == QMessageBox.StandardButton.Yes:
+            self.base.supprimer_table(self.base.table_actuelle)
+            self.base.changer_table_actuelle("Internet")
+            self.actualiser_liste_entrees("Internet")
+            self.actualiser_menu_groupes()
 
     def supprimer_entree_selectionnee(self) -> None:
         """Supprime l'entrée sélectionnée par l'utilisateur de la table actuelle."""
@@ -314,6 +338,11 @@ class FenetreAppli(QMainWindow):
         creer_groupe.setShortcut("Ctrl+G")
         creer_groupe.triggered.connect(self.creer_groupe)
         self.menu_groupes.addAction(creer_groupe)
+        # Action de suppression du groupe actuel
+        suppr_groupe_actuel = QAction("Supprimer le groupe actuel", self)
+        suppr_groupe_actuel.setShortcut("Ctrl+Shift+D")
+        suppr_groupe_actuel.triggered.connect(self.supprimer_table_actuelle)
+        self.menu_groupes.addAction(suppr_groupe_actuel)
 
         
         self.menu_groupes.addSeparator()

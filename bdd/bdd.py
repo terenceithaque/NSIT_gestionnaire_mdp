@@ -50,6 +50,17 @@ class BDD:
 
         self.est_enregistree = False
 
+    def supprimer_table(self, table:str) -> None:
+        """Supprime la table indiquée de la base de données."""
+
+        assert table in self.tables, f"La table à supprimer ({table}) n'existe pas"
+        assert table != "Master" or table != "Internet", f"Impossible de supprimer la table: {table}"
+
+        self.curseur.execute(f"DROP TABLE {table};")   
+
+        # Actualiser la liste des tables
+        self.tables = self.recuperer_tables()
+
 
     def maj_entree(self, donnees:dict, id=1) -> None:
         """Met à jour l'entrée référencée par l'ID indiqué dans la table actuelle en utilisant le dictionnaire de données passé en paramètre."""
