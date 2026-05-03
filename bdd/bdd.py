@@ -24,6 +24,7 @@ class BDD:
         # La table actuelle représente la table sur laquelle l'utilisateur travaille actuellement
         if len(self.tables) > 0:
             self.table_actuelle = self.tables[0]
+            self.maj_IDs(self.table_actuelle)
 
         else:
             self.table_actuelle = ""    
@@ -47,6 +48,8 @@ class BDD:
         print("Table actuelle :", self.table_actuelle)
         # Supprimer l'entrée de la table actuelle
         self.curseur.execute(f"DELETE FROM {self.table_actuelle} WHERE id={id};")    
+
+        self.maj_IDs(self.table_actuelle)
 
         self.est_enregistree = False
 
@@ -120,6 +123,29 @@ class BDD:
         self.tables = self.recuperer_tables()
         self.enregistrer() # Enregistrer les modifications
 
+
+    def maj_IDs(self, table:str) -> None:
+        """Met à jour les IDs de chaque élément dans la table indiquée."""
+
+        contenu_initial = self.contenu_table(table) # Contenu initial de la table
+
+        contenu_maj = []
+
+        # Parcourir toutes les entrées de la table
+        id = 1
+        for entree in contenu_initial:
+            # Mettre à jour l'ID de l'entrée
+            entree[0] = id
+            contenu_maj.append(entree)
+            id += 1
+
+
+        # Mettre à jour la base de données
+        contenu_base = self.contenu_base()
+        contenu_base[table] = contenu_maj
+        self.maj_contenu(self.contenu_base)
+
+
     def changer_table_actuelle(self, table:str) -> None:
         """Change la table actuelle de la base de données pour celle donnée en paramètres."""
 
@@ -143,8 +169,12 @@ class BDD:
 
     def ajouter_entree(self, entree:dict) -> None:
         """Crée une nouvelle entrée dans la table actuelle."""
+
+        print(self.contenu_table(self.table_actuelle))
         
-        self.curseur.execute(f"""INSERT INTO {self.table_actuelle} VALUES ({self.generer_id(self.table_actuelle)}, '{entree["titreEntree"]}', '{entree["nomUtil"]}', '{entree["mdp"]}')""")
+        id_entree = self.generer_id(self.table_actuelle)
+        print("ID de l'entrée :", id_entree)
+        self.curseur.execute(f"""INSERT INTO {self.table_actuelle} VALUES ({id_entree}, '{entree["titreEntree"]}', '{entree["nomUtil"]}', '{entree["mdp"]}')""")
 
         self.est_enregistree = False
 
